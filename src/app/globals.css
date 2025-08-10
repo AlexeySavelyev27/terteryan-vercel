@@ -155,23 +155,14 @@ p {
   font-family: var(--font-serif), serif;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+/* Hide scrollbars globally for content zones */
+.content-zone::-webkit-scrollbar {
+  display: none;
 }
 
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: currentColor;
-  opacity: 0.3;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  opacity: 0.5;
+.content-zone {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 /* Smooth scrolling */

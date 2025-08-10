@@ -100,7 +100,7 @@ export default function Home() {
       >
         <Link
           href="/media"
-          className="primary-button rounded-full transition-all font-medium"
+          className="primary-button rounded-full"
           style={{
             padding: "clamp(6px, 1.2vw, 12px) clamp(16px, 3.2vw, 32px)",
             fontSize: "clamp(12px, 1.6vw, 16px)",
@@ -110,7 +110,7 @@ export default function Home() {
         </Link>
         <Link
           href="/biography"
-          className="secondary-button border rounded-full hover:bg-current/10 transition-all inline-block text-center"
+          className="secondary-button rounded-full"
           style={{
             padding: "clamp(6px, 1.2vw, 12px) clamp(16px, 3.2vw, 32px)",
             fontSize: "clamp(12px, 1.6vw, 16px)",
