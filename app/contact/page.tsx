@@ -142,7 +142,8 @@ export default function Contact() {
             fontSize: '72px',
             letterSpacing: '0.05em',
             textAlign: 'left',
-            marginBottom: '-1rem'
+            marginBottom: '-1rem',
+			marginTop: '-2rem'
           }}
         >
           ОБРАТНАЯ СВЯЗЬ
@@ -164,14 +165,15 @@ export default function Contact() {
       {/* Form */}
       <form 
         onSubmit={handleSubmit} 
-        className="space-y-6"
-        style={{ 
+        className="space-y-6 backdrop-blur-sm"
+        style={{
           width: '100%',
           padding: '1.5rem',
           border: '1px solid rgba(128, 128, 128, 0.2)',
           borderRadius: '12px',
           backgroundColor: 'rgba(128, 128, 128, 0.05)',
-          backdropFilter: 'blur(10px)'
+		  backdropFilter: "blur(20px)",
+          zIndex: 4
         }}
       >
         {/* Name and Email Row */}

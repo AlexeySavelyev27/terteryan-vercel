@@ -5,7 +5,7 @@ import type React from "react"
 import { useState, useEffect, useRef } from "react"
 import { usePathname } from "next/navigation"
 import { Sun, Moon } from "lucide-react"
-import Link from "next/link"
+import TransitionLink from "./TransitionLink"
 
 // Page order for navigation
 const PAGES = ["/", "/biography", "/media", "/contact"]
@@ -27,6 +27,8 @@ export default function PageLayout({ children }: PageLayoutProps) {
   const [isMounted, setIsMounted] = useState(false)
   const [menuWidth, setMenuWidth] = useState(0)
   const [showScrollbar, setShowScrollbar] = useState(false)
+  const [transitionState, setTransitionState] = useState<'idle' | 'exiting' | 'entering'>('idle')
+  const [transitionDirection, setTransitionDirection] = useState<'left' | 'right'>('right')
   const menuRef = useRef<HTMLDivElement>(null)
   const contentZoneRef = useRef<HTMLDivElement>(null)
   const customScrollbarRef = useRef<HTMLDivElement>(null)
@@ -188,71 +190,82 @@ export default function PageLayout({ children }: PageLayoutProps) {
     }
   }, [])
 
-  // Measure menu width and update content zone
+  // Measure menu width with debounced resize listener for performance
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout
+    
     const updateMenuWidth = () => {
-      if (menuRef.current) {
-        const width = menuRef.current.offsetWidth
-        setMenuWidth(width)
-      }
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(() => {
+        if (menuRef.current) {
+          const width = menuRef.current.offsetWidth
+          setMenuWidth(width)
+        }
+      }, 16) // ~60fps debounce
     }
 
     updateMenuWidth()
 
-    // Update on resize
-    window.addEventListener("resize", updateMenuWidth)
-    return () => window.removeEventListener("resize", updateMenuWidth)
+    // Debounced resize listener
+    window.addEventListener("resize", updateMenuWidth, { passive: true })
+    return () => {
+      clearTimeout(timeoutId)
+      window.removeEventListener("resize", updateMenuWidth)
+    }
   }, [])
 
-  // Custom scrollbar functionality
+  // Custom scrollbar functionality - Optimized for performance
   useEffect(() => {
     const contentZone = contentZoneRef.current
     const scrollThumb = scrollThumbRef.current
 
     if (!contentZone || !scrollThumb) return
 
+    let ticking = false
+    let resizeTimeout: NodeJS.Timeout
+
     const updateScrollbar = () => {
-      const hasScrollableContent = contentZone.scrollHeight > contentZone.clientHeight
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const hasScrollableContent = contentZone.scrollHeight > contentZone.clientHeight
+          setShowScrollbar(hasScrollableContent)
 
-      // Show/hide scrollbar based on whether content is scrollable
-      setShowScrollbar(hasScrollableContent)
+          if (hasScrollableContent) {
+            const scrollPercentage = contentZone.scrollTop / (contentZone.scrollHeight - contentZone.clientHeight)
+            const thumbHeight = Math.max(20, (contentZone.clientHeight / contentZone.scrollHeight) * window.innerHeight)
+            const availableSpace = window.innerHeight - thumbHeight
+            const thumbPosition = scrollPercentage * availableSpace
 
-      if (!hasScrollableContent) return
+            scrollThumb.style.height = `${thumbHeight}px`
+            scrollThumb.style.transform = `translateY(${thumbPosition}px)`
+          }
+          ticking = false
+        })
+        ticking = true
+      }
+    }
 
-      const scrollPercentage = contentZone.scrollTop / (contentZone.scrollHeight - contentZone.clientHeight)
-      const thumbHeight = Math.max(20, (contentZone.clientHeight / contentZone.scrollHeight) * window.innerHeight)
-      const availableSpace = window.innerHeight - thumbHeight
-      const thumbPosition = scrollPercentage * availableSpace
-
-      scrollThumb.style.height = `${thumbHeight}px`
-      scrollThumb.style.transform = `translateY(${thumbPosition}px)`
+    const debouncedUpdateScrollbar = () => {
+      clearTimeout(resizeTimeout)
+      resizeTimeout = setTimeout(updateScrollbar, 16)
     }
 
     // Initial update
     updateScrollbar()
 
-    // Listen for scroll events
-    contentZone.addEventListener("scroll", updateScrollbar)
-    window.addEventListener("resize", updateScrollbar)
+    // Optimized event listeners
+    contentZone.addEventListener("scroll", updateScrollbar, { passive: true })
+    window.addEventListener("resize", debouncedUpdateScrollbar, { passive: true })
 
-    // Use ResizeObserver to detect content changes
-    const resizeObserver = new ResizeObserver(updateScrollbar)
+    // Single ResizeObserver with throttling
+    const resizeObserver = new ResizeObserver(debouncedUpdateScrollbar)
     resizeObserver.observe(contentZone)
 
-    // Also observe the content inside for dynamic content changes
-    const mutationObserver = new MutationObserver(updateScrollbar)
-    mutationObserver.observe(contentZone, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      characterData: true,
-    })
-
     return () => {
+      clearTimeout(resizeTimeout)
       contentZone.removeEventListener("scroll", updateScrollbar)
-      window.removeEventListener("resize", updateScrollbar)
+      window.removeEventListener("resize", debouncedUpdateScrollbar)
       resizeObserver.disconnect()
-      mutationObserver.disconnect()
     }
   }, [])
 
@@ -267,6 +280,45 @@ export default function PageLayout({ children }: PageLayoutProps) {
     }
   }
 
+  // Page transition handler
+  useEffect(() => {
+    const handlePageTransition = (e: CustomEvent) => {
+      const targetHref = e.detail.href
+      const currentIndex = PAGES.indexOf(pathname)
+      const targetIndex = PAGES.indexOf(targetHref)
+      
+      // Determine animation direction based on page order
+      const direction = targetIndex > currentIndex ? 'right' : 'left'
+      setTransitionDirection(direction)
+      
+      // Start the exit animation
+      setTransitionState('exiting')
+      
+      // The rest of the transitions will be handled by the pathname change useEffect
+    }
+    
+    window.addEventListener('startPageTransition', handlePageTransition as EventListener)
+    
+    return () => {
+      window.removeEventListener('startPageTransition', handlePageTransition as EventListener)
+    }
+  }, [pathname])
+  
+  // Reset transition state when pathname changes (new page loaded)
+  useEffect(() => {
+    if (transitionState === 'exiting') {
+      // Set entering state with a delay to ensure the new content is ready
+      setTimeout(() => {
+        setTransitionState('entering')
+      }, 50) // Small delay to ensure new content is ready
+      
+      // After the complete animation sequence, reset to idle
+      setTimeout(() => {
+        setTransitionState('idle')
+      }, 600) // Total animation duration (exit: 300ms + delay: 300ms)
+    }
+  }, [pathname, transitionState])
+
   // Trigger photo fade-in when component mounts
   useEffect(() => {
     setPhotoLoaded(true)
@@ -274,20 +326,21 @@ export default function PageLayout({ children }: PageLayoutProps) {
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isDark ? "dark" : ""}`}>
-      {/* Fixed Background Image */}
+      {/* Fixed Background Image - Optimized for performance */}
       <div
         className="fixed inset-0 bg-cover bg-center bg-no-repeat transition-all duration-300"
         style={{
           backgroundImage: `url('/bg.png')`,
-          backgroundAttachment: "fixed",
           filter: isDark ? "invert(1)" : "none",
-          zIndex: -1,
+          zIndex: 1,
+          willChange: "filter",
+          transform: "translateZ(0)", // GPU acceleration
         }}
       />
 
       {/* Portrait photo - using 1.jpg for all pages for now */}
       <div
-        className="fixed bg-cover bg-center transition-all duration-1000 ease-out"
+        className="fixed bg-cover bg-center transition-opacity duration-1000 ease-out"
         style={{
           backgroundImage: `url('/photos/1.jpg')`,
           filter: "none",
@@ -295,20 +348,22 @@ export default function PageLayout({ children }: PageLayoutProps) {
           height: "100%",
           right: "-14%",
           top: "38%",
-          transform: "translateY(-50%) scale(1.47)",
+          transform: "translateY(-50%) scale(1.47) translateZ(0)", // GPU acceleration
           transformOrigin: "center",
           mask: "linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 38%)",
           WebkitMask: "linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 38%)",
           opacity: photoLoaded ? 1 : 0,
-          zIndex: 20,
-          overflow: "hidden", // Prevent photo from causing scroll
+          zIndex: 1,
+          overflow: "hidden",
+          willChange: "opacity", // Only animate opacity
+          backfaceVisibility: "hidden",
         }}
       />
 
       {/* Custom Scrollbar at Screen Edge - Only show when content is scrollable */}
       <div
         ref={customScrollbarRef}
-        className={`fixed z-40 transition-opacity duration-300 ${
+        className={`fixed z-4 transition-opacity duration-300 ${
           showScrollbar ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         style={{
@@ -335,7 +390,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
 
       {/* Fixed Theme Switcher Container - Above menu, right aligned with menu */}
       <div
-        className="fixed z-30 flex justify-end"
+        className="fixed z-4 flex justify-start"
         style={{
           top: "60px", // Above the menu
           left: "6vw", // Same alignment as menu
@@ -343,9 +398,10 @@ export default function PageLayout({ children }: PageLayoutProps) {
           width: menuWidth > 0 ? `${menuWidth}px` : "auto", // Exact match to menu width
           maxWidth: "100%", // Respect the container constraints
           // TEMPORARY BORDER - Theme Button Container
-          border: "3px solid orange",
-          boxSizing: "border-box",
+          //border: "3px solid orange",
+          //boxSizing: "border-box",
           padding: "8px", // Some padding inside the container
+		  paddingLeft: "1.5vw"
         }}
       >
         <button
@@ -359,7 +415,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
 
       {/* Fixed Navigation - Stays in place when scrolling */}
       <nav
-        className="fixed z-30"
+        className="fixed z-3"
         style={{
           top: "128px", // Same as the original paddingTop
           left: "6vw", // Same as the original paddingLeft
@@ -378,13 +434,13 @@ export default function PageLayout({ children }: PageLayoutProps) {
               maxWidth: "100%", // This now respects the nav container's constraints
               minWidth: "0",
               // TEMPORARY BORDER - Menu Object
-              border: "3px solid blue",
-              boxSizing: "border-box",
+              //border: "3px solid blue",
+              //boxSizing: "border-box",
             }}
           >
             {/* Top gradient line */}
             <div
-              className="transition-all duration-300 relative"
+              className="transition-colors duration-300 relative"
               style={{
                 height: "clamp(2px, 0.5vw, 4.5px)",
                 marginBottom: "0px",
@@ -392,13 +448,15 @@ export default function PageLayout({ children }: PageLayoutProps) {
                 background: `linear-gradient(to right, transparent 0%, ${
                   isDark ? "rgba(255,255,255,1)" : "rgba(0,0,0,1)"
                 } 8%, ${isDark ? "rgba(255,255,255,1)" : "rgba(0,0,0,1)"} 92%, transparent 100%)`,
-                zIndex: 10,
+                zIndex: 3,
+                willChange: "background",
+                transform: "translateZ(0)",
               }}
             />
 
             {/* Menu items */}
             <ul
-              className="flex relative font-light transition-all duration-300"
+              className="flex relative font-light transition-colors duration-300"
               style={{
                 fontFamily: "var(--font-merriweather), serif",
                 fontSize: "clamp(12px, 3vw, 44px)",
@@ -409,7 +467,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
                 paddingTop: "clamp(6px, 1.5vw, 22px)",
                 paddingBottom: "clamp(6px, 1.5vw, 22px)",
                 justifyContent: "center",
-                zIndex: 10,
+                zIndex: 3,
                 background: `linear-gradient(to right, transparent 0%, ${
                   isDark ? "rgba(0,0,0,1)" : "rgba(255,255,255,1)"
                 } 8%, ${isDark ? "rgba(0,0,0,1)" : "rgba(255,255,255,1)"} 92%, transparent 100%)`,
@@ -432,25 +490,28 @@ export default function PageLayout({ children }: PageLayoutProps) {
                     minWidth: "0",
                   }}
                 >
-                  <Link
+                  <TransitionLink
                     href={href}
                     className={`nav-button hover:underline underline-offset-4 decoration-2 transition-all ${
                       pathname === href ? "underline" : ""
                     }`}
-                    style={{
-                      whiteSpace: "nowrap",
-                      display: "block",
-                    }}
                   >
-                    {PAGE_NAMES[href as keyof typeof PAGE_NAMES]}
-                  </Link>
+                    <span
+                      style={{
+                        whiteSpace: "nowrap",
+                        display: "block",
+                      }}
+                    >
+                      {PAGE_NAMES[href as keyof typeof PAGE_NAMES]}
+                    </span>
+                  </TransitionLink>
                 </li>
               ))}
             </ul>
 
             {/* Bottom gradient line */}
             <div
-              className="transition-all duration-300 relative"
+              className="transition-colors duration-300 relative"
               style={{
                 height: "clamp(2px, 0.5vw, 4.5px)",
                 marginTop: "0px",
@@ -458,7 +519,9 @@ export default function PageLayout({ children }: PageLayoutProps) {
                 background: `linear-gradient(to right, transparent 0%, ${
                   isDark ? "rgba(255,255,255,1)" : "rgba(0,0,0,1)"
                 } 8%, ${isDark ? "rgba(255,255,255,1)" : "rgba(0,0,0,1)"} 92%, transparent 100%)`,
-                zIndex: 10,
+                zIndex: 3,
+                willChange: "background",
+                transform: "translateZ(0)",
               }}
             />
           </div>
@@ -467,15 +530,16 @@ export default function PageLayout({ children }: PageLayoutProps) {
 
       {/* Main Screen Section - Fixed height with 6% bottom margin */}
       <section
-        className="fixed z-10 w-full flex flex-col"
+        className="fixed z-2 w-full flex flex-col"
         style={{
-          top: "128px",
+          top: "100px",
           bottom: "6vh", // 6% bottom margin
-          left: "6vw",
-          right: "6vw",
+		  //paddingLeft: "7vw",
+          //left: "7.8vw",
+          //right: "6vw",
           // TEMPORARY BORDER - Main Screen Section
-          border: "3px solid red",
-          boxSizing: "border-box",
+          //border: "3px solid red",
+          //boxSizing: "border-box",
         }}
       >
         {/* Spacer for fixed menu + bottom margin */}
@@ -499,18 +563,30 @@ export default function PageLayout({ children }: PageLayoutProps) {
         >
           {/* Content container - FIXED width matching menu with scrolling */}
           <div
-            className="transition-all duration-300 relative"
+            className={`transition-opacity duration-300 relative ${
+              transitionState === 'exiting'
+                ? transitionDirection === 'right'
+                  ? 'content-area-slide-out-left'
+                  : 'content-area-slide-out-right'
+                : transitionState === 'entering'
+                ? transitionDirection === 'right'
+                  ? 'content-area-slide-in-right'
+                  : 'content-area-slide-in-left'
+                : ''
+            }`}
             style={{
               // Fixed width matching the menu
-              width: menuWidth > 0 ? `${menuWidth}px` : "fit-content",
+              width: menuWidth > 0 ? `calc(${menuWidth}px - 3vw)` : "fit-content",
               maxWidth: "100%",
               minWidth: "0",
               height: "100%",
               padding: "0",
-              margin: "0",
+              marginLeft: "7.5vw",
+              // Start with opacity 0 when in entering state to prevent flash
+              opacity: transitionState === 'entering' && !document.querySelector('.content-area-slide-in-right, .content-area-slide-in-left') ? 0 : 1,
               // TEMPORARY BORDER - Content Zone
-              border: "3px solid green",
-              boxSizing: "border-box",
+              //border: "3px solid green",
+              //boxSizing: "border-box",
             }}
           >
             {/* Scrollable content area with mask for fade effect - HIDDEN SCROLLBAR */}
@@ -526,9 +602,9 @@ export default function PageLayout({ children }: PageLayoutProps) {
                 scrollbarWidth: "none", // Firefox
                 msOverflowStyle: "none", // IE/Edge
                 // Mask to fade content at top and bottom edges
-                mask: "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,1) clamp(1rem, 4vw, 2.5rem), rgba(0,0,0,1) calc(100% - clamp(1rem, 4vw, 2.5rem)), transparent 100%)",
-                WebkitMask:
-                  "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,1) clamp(1rem, 4vw, 2.5rem), rgba(0,0,0,1) calc(100% - clamp(1rem, 4vw, 2.5rem)), transparent 100%)",
+                //mask: "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,1) clamp(1rem, 4vw, 2.5rem), rgba(0,0,0,1) calc(100% - clamp(1rem, 4vw, 2.5rem)), transparent 100%)",
+                //WebkitMask:
+                //  "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,1) clamp(1rem, 4vw, 2.5rem), rgba(0,0,0,1) calc(100% - clamp(1rem, 4vw, 2.5rem)), transparent 100%)",
               }}
             >
               {/* Content wrapper to ensure top-left alignment */}

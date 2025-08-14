@@ -28,7 +28,7 @@ export const startPageTransition = (href: string) => {
   return new Promise<void>((resolve) => {
     setTimeout(() => {
       resolve()
-    }, 400) // Match the duration of the exit animation
+    }, 300) // Match the duration of the exit animation
   })
 }
 
@@ -55,16 +55,16 @@ export default function TransitionLink({ href, children, className = "", onClick
       isTransitioning = true
 
       try {
-        // 1. Start exit animation and wait for it to progress
+        // 1. Start exit animation and wait for it to complete
         await startPageTransition(href)
 
-        // 2. After exit animation has started, navigate to the new page
+        // 2. After exit animation is done, navigate to the new page
         router.push(href)
       } finally {
         // Reset the transitioning flag after a delay that covers the full animation
         setTimeout(() => {
           isTransitioning = false
-        }, 800) // Cover both animations (exit: 0.4s + entry: 0.4s)
+        }, 600) // Cover both animations (exit: 0.3s + entry: 0.3s)
       }
     },
     [href, router, pathname, onClick],

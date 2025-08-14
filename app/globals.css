@@ -221,6 +221,18 @@ html {
   overflow-x: hidden; /* Prevent horizontal scrollbars during transitions */
 }
 
+/* Performance optimization: Reduce repaints during resize */
+* {
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* GPU acceleration for common elements */
+.fixed, .absolute, .transition-all {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
 /* Focus styles */
 button:focus-visible,
 a:focus-visible {
@@ -254,37 +266,41 @@ a:focus-visible {
 @keyframes content-area-slide-in-right {
   0% {
     transform: translateX(70vw); /* Reduced slide distance */
+    opacity: 0;
   }
   100% {
     transform: translateX(0);
+    opacity: 1;
   }
 }
 
 @keyframes content-area-slide-in-left {
   0% {
     transform: translateX(-70vw); /* Reduced slide distance */
+    opacity: 0;
   }
   100% {
     transform: translateX(0);
+    opacity: 1;
   }
 }
 
 .content-area-slide-out-left {
-  animation: content-area-slide-out-left 0.3s ease-in-out forwards; /* Changed duration and easing */
+  animation: content-area-slide-out-left 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   pointer-events: none; /* Prevent clicks during transition */
 }
 
 .content-area-slide-out-right {
-  animation: content-area-slide-out-right 0.3s ease-in-out forwards; /* Changed duration and easing */
+  animation: content-area-slide-out-right 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   pointer-events: none; /* Prevent clicks during transition */
 }
 
 .content-area-slide-in-right {
-  animation: content-area-slide-in-right 0.3s ease-in-out forwards; /* Changed duration and easing */
-  animation-delay: none; /* Delay matches the exit animation duration */
+  animation: content-area-slide-in-right 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 0.3s; /* Start entry animation after exit animation is complete */
 }
 
 .content-area-slide-in-left {
-  animation: content-area-slide-in-left 0.3s ease-in-out forwards; /* Changed duration and easing */
-  animation-delay: none; /* Delay matches the exit animation duration */
+  animation: content-area-slide-in-left 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 0.3s; /* Start entry animation after exit animation is complete */
 }

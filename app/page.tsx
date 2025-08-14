@@ -13,7 +13,9 @@ export default function Home() {
           minWidth: "0",
           flexShrink: 0,
           overflow: "hidden",
-          marginBottom: "0",
+		  marginLeft: "-5px",
+          marginBottom: "clamp(-1px, -0.8vw, -8px)",
+		  marginTop: "clamp(25px, 0.5vw, 20px)",
         }}
       >
         {/* First Names */}
@@ -21,7 +23,7 @@ export default function Home() {
           className="font-normal"
           style={{
             fontFamily: "var(--font-vollkorn), serif",
-            fontSize: "clamp(6px, 6vw, 95px)",
+            fontSize: "clamp(6px, 6vw, 104px)",
             letterSpacing: "clamp(0em, 0.1em, 0.14em)",
             marginBottom: "clamp(-1px, -0.8vw, -8px)",
             whiteSpace: "nowrap",
@@ -37,7 +39,7 @@ export default function Home() {
           className="font-normal leading-none"
           style={{
             fontFamily: "var(--font-vollkorn), serif",
-            fontSize: "clamp(15px, 15vw, 268px)",
+            fontSize: "clamp(15px, 15vw, 280px)",
             letterSpacing: "0em",
             whiteSpace: "nowrap",
             textAlign: "left",
@@ -72,14 +74,14 @@ export default function Home() {
             overflowWrap: "break-word",
           }}
         >
-          <p>
+          <h6>
             Армянский пианист, композитор и педагог, посвятивший более 40 лет обучению в Московском музыкальном
             колледже, где воспитал множество музыкантов.
-          </p>
-          <p>
+          </h6>
+          <h6>
             Его многогранный талант проявился в исполнительстве, сочинении и глубокой преданности искусству — от
             романтической классики до авторской музыки с восточным колоритом.
-          </p>
+          </h6>
         </div>
       </div>
 
