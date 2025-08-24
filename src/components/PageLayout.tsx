@@ -510,7 +510,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
                 >
                   <TransitionLink
                     href={href}
-                    className={`nav-button hover:underline underline-offset-4 decoration-2 transition-all ${
+                    className={`nav-button hover:underline underline-offset-4 decoration-2 transition-all duration-300 ${
                       pathname === href ? "underline" : ""
                     }`}
                   >
