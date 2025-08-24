@@ -189,8 +189,8 @@ export default function PhotoCategory({ onBack }: PhotoCategoryProps) {
       )}
 
       {/* Note about photos */}
-      <div 
-        className="mt-8 p-4 rounded-lg border border-current/20 frosted-glass"
+      <div
+        className="mt-8 p-4 rounded-lg unified-button-bg"
       >
         <p 
           className="text-sm opacity-70 text-center"
