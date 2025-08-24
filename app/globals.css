@@ -665,6 +665,17 @@ a:focus-visible {
   border-color: rgba(128, 128, 128, 0.5);
 }
 
+/* Menu gradient backgrounds with smooth transitions */
+.menu-gradient-line {
+  background: linear-gradient(to right, transparent 0%, var(--menu-line-color) 8%, var(--menu-line-color) 92%, transparent 100%);
+  transition: all 0.3s ease;
+}
+
+.menu-gradient-bg {
+  background: linear-gradient(to right, transparent 0%, var(--menu-bg-color) 8%, var(--menu-bg-color) 92%, transparent 100%);
+  transition: all 0.3s ease;
+}
+
 /* Print styles */
 @media print {
   .fixed {
