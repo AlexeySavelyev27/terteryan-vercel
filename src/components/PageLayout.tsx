@@ -305,9 +305,9 @@ export default function PageLayout({ children }: PageLayoutProps) {
   // Removed photo fade-in effect - no longer needed
 
   // Show loading state with layout-matching background to prevent flash
-  if (isLoading || !isMounted) {
+  if (!isMounted) {
     return (
-      <div className={`h-screen transition-colors duration-300 ${isDark ? "dark" : ""}`}>
+      <div className="h-screen transition-colors duration-300">
         {/* Match the main layout background during loading */}
         <div
           className="fixed inset-0 bg-cover bg-center bg-no-repeat"
