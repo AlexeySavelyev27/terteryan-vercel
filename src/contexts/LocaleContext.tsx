@@ -13,29 +13,52 @@ interface LocaleContextType {
 const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
 
 export function LocaleProvider({ children }: { children: ReactNode }) {
-  // Start with browser-detected locale to reduce loading time
-  const getInitialLocale = (): 'ru' | 'en' => {
-    if (typeof navigator !== 'undefined') {
-      const browserLang = navigator.language.substring(0, 2).toLowerCase();
-      return browserLang === 'ru' ? 'ru' : 'en';
-    }
-    return 'en';
-  };
-  
-  const [locale, setLocale] = useState<'ru' | 'en'>(getInitialLocale());
-  const [isLoading, setIsLoading] = useState(false); // Start as false for immediate rendering
+  // Always start with 'ru' to prevent hydration mismatch
+  const [locale, setLocale] = useState<'ru' | 'en'>('ru');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const t = useTranslation(locale);
 
   useEffect(() => {
-    // Run locale detection in background to potentially update if IP-based detection differs
+    setIsMounted(true);
+
+    // Only detect locale after component is mounted to prevent hydration mismatch
+    const getClientLocale = (): 'ru' | 'en' => {
+      // Check localStorage first
+      const savedLocale = localStorage.getItem('locale');
+      if (savedLocale === 'ru' || savedLocale === 'en') {
+        return savedLocale;
+      }
+
+      // Fallback to browser language
+      if (typeof navigator !== 'undefined') {
+        const browserLang = navigator.language.substring(0, 2).toLowerCase();
+        return browserLang === 'ru' ? 'ru' : 'en';
+      }
+      return 'ru';
+    };
+
+    const clientLocale = getClientLocale();
+    if (clientLocale !== locale) {
+      setLocale(clientLocale);
+    }
+
+    // Run background IP-based detection
     detectLocale().then((detectedLocale) => {
-      if (detectedLocale !== locale) {
+      if (detectedLocale !== clientLocale) {
         setLocale(detectedLocale);
       }
     }).catch(() => {
-      // If detection fails, keep current browser-based locale
+      // If detection fails, keep current locale
     });
-  }, []); // Empty dependency array to run only once
+  }, []);
+
+  // Save locale to localStorage when it changes
+  useEffect(() => {
+    if (isMounted) {
+      localStorage.setItem('locale', locale);
+    }
+  }, [locale, isMounted]);
 
   return (
     <LocaleContext.Provider value={{ locale, setLocale, t, isLoading }}>
