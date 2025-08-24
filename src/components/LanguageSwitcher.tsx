@@ -51,7 +51,7 @@ export default function LanguageSwitcher() {
               <button
                 key={language.code}
                 onClick={() => handleLanguageChange(language.code as 'ru' | 'en')}
-                className={`w-full flex items-center gap-2 px-3 py-2 text-sm transition-colors hover:bg-current/10 first:rounded-t-lg last:rounded-b-lg ${
+                className={`w-full flex items-center gap-2 px-3 py-2 text-sm transition-colors hover:bg-current/10 first:rounded-t-lg last:rounded-b-lg cursor-pointer ${
                   locale === language.code ? 'bg-current/5' : ''
                 }`}
               >
