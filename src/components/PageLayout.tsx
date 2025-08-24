@@ -40,12 +40,11 @@ export default function PageLayout({ children }: PageLayoutProps) {
 
   // Initialize theme and mounting - prevent hydration mismatch
   useEffect(() => {
-    // Read the initial theme from the global flag set by the script
-    const initialTheme = window.__INITIAL_THEME__ || 'light'
-    const darkModeEnabled = initialTheme === 'dark'
-    
+    // Check if dark class is already applied to prevent mismatch
+    const isDarkFromDOM = document.documentElement.classList.contains('dark')
+
     // Sync state with the actual DOM
-    setIsDark(darkModeEnabled)
+    setIsDark(isDarkFromDOM)
     setIsMounted(true)
   }, [])
 
