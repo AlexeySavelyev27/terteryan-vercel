@@ -472,7 +472,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
 
             {/* Menu items */}
             <ul
-              className="flex relative font-light transition-colors duration-300"
+              className="flex relative font-light menu-gradient-bg"
               style={{
                 fontFamily: "var(--font-serif)",
                 fontSize: "clamp(12px, 3vw, 44px)",
@@ -484,9 +484,6 @@ export default function PageLayout({ children }: PageLayoutProps) {
                 paddingBottom: "clamp(6px, 1.5vw, 22px)",
                 justifyContent: "center",
                 zIndex: 3,
-                background: `linear-gradient(to right, transparent 0%, ${
-                  isDark ? "rgba(0,0,0,1)" : "rgba(255,255,255,1)"
-                } 8%, ${isDark ? "rgba(0,0,0,1)" : "rgba(255,255,255,1)"} 92%, transparent 100%)`,
                 margin: "0",
                 width: "fit-content",
                 minWidth: "0",
