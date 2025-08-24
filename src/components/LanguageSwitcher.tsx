@@ -27,11 +27,11 @@ export default function LanguageSwitcher() {
         className="flex items-center gap-2 px-3 py-2 rounded-full unified-button-bg transition-all duration-300 hover:shadow-lg text-sm"
         style={{ minWidth: '140px', justifyContent: 'space-between' }}
       >
-        <Globe size={16} />
-        <span>{currentLanguage?.flag} {currentLanguage?.name}</span>
-        <ChevronDown 
-          size={14} 
-          className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} 
+        <Globe size={16} className="group-hover:opacity-80 transition-opacity" />
+        <span className="group-hover:opacity-80 transition-opacity">{currentLanguage?.flag} {currentLanguage?.name}</span>
+        <ChevronDown
+          size={14}
+          className={`transition-all group-hover:opacity-80 ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
 
