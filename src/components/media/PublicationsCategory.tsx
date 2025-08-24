@@ -71,10 +71,9 @@ export default function PublicationsCategory({ onBack }: PublicationsCategoryPro
         {publicationsContent.items.map((publication) => (
           <div
             key={publication.id}
-            className="border transition-all duration-300 hover:shadow-lg group frosted-glass hover:frosted-glass-hover"
+            className="unified-button-bg transition-all duration-300 hover:shadow-lg group"
             style={{
               borderRadius: '12px',
-              borderColor: 'rgba(128, 128, 128, 0.2)',
               padding: '1.5rem'
             }}
           >
