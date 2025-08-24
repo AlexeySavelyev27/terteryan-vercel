@@ -44,12 +44,8 @@ export default function LanguageSwitcher() {
           />
           
           {/* Dropdown */}
-          <div 
-            className="absolute top-full left-0 mt-2 border rounded-lg shadow-lg z-50 min-w-full frosted-glass"
-            style={{
-              backgroundColor: 'var(--background)',
-              borderColor: 'rgba(128, 128, 128, 0.2)'
-            }}
+          <div
+            className="absolute top-full left-0 mt-2 rounded-lg shadow-lg z-50 min-w-full unified-button-bg"
           >
             {languages.map((language) => (
               <button
