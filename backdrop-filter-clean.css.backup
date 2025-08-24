@@ -1,0 +1,16 @@
+/* This file is now deprecated - backdrop-filter effects have been replaced */
+/* 
+  Previous backdrop-filter issues with transitions have been resolved by:
+  
+  1. Removing all backdrop-filter/backdrop-blur usage
+  2. Implementing transition-friendly frosted glass effects using:
+     - Layered box-shadows for depth
+     - CSS gradients for glass-like appearance
+     - Inset shadows for realistic lighting
+     - Smooth hover animations with translateY
+  
+  These effects provide the same visual appeal as backdrop-filter
+  but work seamlessly with CSS transitions and animations.
+  
+  See globals.css for the new .frosted-glass and .frosted-glass-hover classes.
+*/

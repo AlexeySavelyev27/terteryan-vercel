@@ -17,6 +17,8 @@ interface MusicPlayerProps {
   tracks?: Track[]
   width?: string
   className?: string
+  onTrackChange?: (track: Track) => void
+  selectedTrack?: Track
 }
 
 // Sample tracks - replace with actual data
@@ -44,8 +46,8 @@ const defaultTracks: Track[] = [
   },
 ]
 
-export default function MusicPlayer({ tracks = defaultTracks, width = "100%", className = "" }: MusicPlayerProps) {
-  const [currentTrack, setCurrentTrack] = useState<Track>(tracks[0])
+export default function MusicPlayer({ tracks = defaultTracks, width = "100%", className = "", onTrackChange, selectedTrack }: MusicPlayerProps) {
+  const [currentTrack, setCurrentTrack] = useState<Track>(selectedTrack || tracks[0])
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
@@ -55,12 +57,14 @@ export default function MusicPlayer({ tracks = defaultTracks, width = "100%", cl
   const [isDarkTheme, setIsDarkTheme] = useState(false)
   const audioRef = useRef<HTMLAudioElement>(null)
 
-  // Update current track when tracks change
+  // Update current track when tracks or selectedTrack change
   useEffect(() => {
-    if (tracks.length > 0 && !tracks.find((t) => t.id === currentTrack?.id)) {
+    if (selectedTrack && selectedTrack.id !== currentTrack?.id) {
+      setCurrentTrack(selectedTrack)
+    } else if (tracks.length > 0 && !tracks.find((t) => t.id === currentTrack?.id)) {
       setCurrentTrack(tracks[0])
     }
-  }, [tracks, currentTrack])
+  }, [tracks, currentTrack, selectedTrack])
 
   // Theme detection
   useEffect(() => {
@@ -94,8 +98,10 @@ export default function MusicPlayer({ tracks = defaultTracks, width = "100%", cl
     const handleNext = () => {
       const currentIndex = tracks.findIndex((track) => track.id === currentTrack.id)
       const nextIndex = currentIndex < tracks.length - 1 ? currentIndex + 1 : 0
-      setCurrentTrack(tracks[nextIndex])
+      const newTrack = tracks[nextIndex]
+      setCurrentTrack(newTrack)
       setIsPlaying(false)
+      onTrackChange?.(newTrack)
     }
 
     audio.addEventListener("timeupdate", updateTime)
@@ -131,15 +137,19 @@ export default function MusicPlayer({ tracks = defaultTracks, width = "100%", cl
   const handlePrevious = () => {
     const currentIndex = tracks.findIndex((track) => track.id === currentTrack.id)
     const previousIndex = currentIndex > 0 ? currentIndex - 1 : tracks.length - 1
-    setCurrentTrack(tracks[previousIndex])
+    const newTrack = tracks[previousIndex]
+    setCurrentTrack(newTrack)
     setIsPlaying(false)
+    onTrackChange?.(newTrack)
   }
 
   const handleNext = () => {
     const currentIndex = tracks.findIndex((track) => track.id === currentTrack.id)
     const nextIndex = currentIndex < tracks.length - 1 ? currentIndex + 1 : 0
-    setCurrentTrack(tracks[nextIndex])
+    const newTrack = tracks[nextIndex]
+    setCurrentTrack(newTrack)
     setIsPlaying(false)
+    onTrackChange?.(newTrack)
   }
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,6 +175,8 @@ export default function MusicPlayer({ tracks = defaultTracks, width = "100%", cl
     const seconds = Math.floor(time % 60)
     return `${minutes}:${seconds.toString().padStart(2, "0")}`
   }
+
+
 
   // Show a message if no tracks are available
   if (!tracks || tracks.length === 0) {

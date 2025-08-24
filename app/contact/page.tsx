@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { Send } from 'lucide-react';
+import { useLocale } from '../../src/contexts/LocaleContext';
 
 export default function Contact() {
+  const { t } = useLocale();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -72,7 +74,7 @@ export default function Contact() {
     
     // Validate captcha
     if (parseInt(captcha.userAnswer) !== captcha.answer) {
-      alert('Неверный ответ на вопрос безопасности. Пожалуйста, попробуйте снова.');
+      alert(t.contact.invalidCaptcha);
       generateCaptcha();
       return;
     }
@@ -113,7 +115,7 @@ export default function Contact() {
               marginBottom: '1rem'
             }}
           >
-            СООБЩЕНИЕ ОТПРАВЛЕНО
+            {t.contact.successTitle}
           </h1>
           
           {/* Success Message */}
@@ -125,7 +127,7 @@ export default function Contact() {
               textAlign: 'center'
             }}
           >
-            Спасибо за ваше сообщение. Мы свяжемся с вами в ближайшее время.
+            {t.contact.successMessage}
           </p>
         </div>
       </div>
@@ -146,7 +148,7 @@ export default function Contact() {
 			marginTop: '-2rem'
           }}
         >
-          ОБРАТНАЯ СВЯЗЬ
+          {t.contact.title}
         </h1>
         
         <p 
@@ -158,21 +160,19 @@ export default function Contact() {
             marginBottom: '0px'
           }}
         >
-          Используйте форму ниже, если у Вас есть вопросы по творчеству композитора.
+          {t.contact.subtitle}
         </p>
       </div>
 
       {/* Form */}
       <form 
         onSubmit={handleSubmit} 
-        className="space-y-6 backdrop-blur-sm"
+        className="space-y-6 consistent-bg"
         style={{
           width: '100%',
           padding: '1.5rem',
-          border: '1px solid rgba(128, 128, 128, 0.2)',
+          //border: '1px solid rgba(0, 0, 0, 0.4)',
           borderRadius: '12px',
-          backgroundColor: 'rgba(128, 128, 128, 0.05)',
-		  backdropFilter: "blur(20px)",
           zIndex: 4
         }}
       >
@@ -182,9 +182,11 @@ export default function Contact() {
             <label 
               htmlFor="name" 
               className="block text-sm font-medium mb-2"
-              style={{ fontFamily: 'var(--font-merriweather), serif' }}
+              style={{ 
+			  fontFamily: 'var(--font-merriweather), serif',
+			  }}
             >
-              Имя *
+              {t.contact.name} *
             </label>
             <input
               type="text"
@@ -193,9 +195,11 @@ export default function Contact() {
               value={formData.name}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-current/20 rounded-lg bg-transparent backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-current/50 transition-all"
-              style={{ fontFamily: 'var(--font-merriweather), serif' }}
-              placeholder="Ваше имя"
+              className="w-full px-4 py-3 border border-current/20 rounded-lg consistent-bg focus:outline-none focus:ring-2 focus:ring-current/50 transition-all"
+              style={{ 
+			  fontFamily: 'var(--font-merriweather), serif',
+			  }}
+              placeholder={t.contact.namePlaceholder}
             />
           </div>
           <div>
@@ -204,7 +208,7 @@ export default function Contact() {
               className="block text-sm font-medium mb-2"
               style={{ fontFamily: 'var(--font-merriweather), serif' }}
             >
-              Email *
+              {t.contact.email} *
             </label>
             <input
               type="email"
@@ -213,9 +217,11 @@ export default function Contact() {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-current/20 rounded-lg bg-transparent backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-current/50 transition-all"
-              style={{ fontFamily: 'var(--font-merriweather), serif' }}
-              placeholder="your@email.com"
+              className="w-full px-4 py-3 border border-current/20 rounded-lg consistent-bg focus:outline-none focus:ring-2 focus:ring-current/50 transition-all"
+              style={{ 
+			  fontFamily: 'var(--font-merriweather), serif',
+			  }}
+              placeholder={t.contact.emailPlaceholder}
             />
           </div>
         </div>
@@ -227,7 +233,7 @@ export default function Contact() {
             className="block text-sm font-medium mb-2"
             style={{ fontFamily: 'var(--font-merriweather), serif' }}
           >
-            Тема
+            {t.contact.subject}
           </label>
           <input
             type="text"
@@ -235,9 +241,9 @@ export default function Contact() {
             name="subject"
             value={formData.subject}
             onChange={handleChange}
-            className="w-full px-4 py-3 border border-current/20 rounded-lg bg-transparent backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-current/50 transition-all"
+            className="w-full px-4 py-3 border border-current/20 rounded-lg consistent-bg focus:outline-none focus:ring-2 focus:ring-current/50 transition-all"
             style={{ fontFamily: 'var(--font-merriweather), serif' }}
-            placeholder="Тема вашего сообщения"
+            placeholder={t.contact.subjectPlaceholder}
           />
         </div>
 
@@ -248,7 +254,7 @@ export default function Contact() {
             className="block text-sm font-medium mb-2"
             style={{ fontFamily: 'var(--font-merriweather), serif' }}
           >
-            Сообщение *
+            {t.contact.message} *
           </label>
           <textarea
             id="message"
@@ -257,9 +263,9 @@ export default function Contact() {
             onChange={handleChange}
             required
             rows={6}
-            className="w-full px-4 py-3 border border-current/20 rounded-lg bg-transparent backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-current/50 transition-all resize-vertical"
+            className="w-full px-4 py-3 border border-current/20 rounded-lg consistent-bg focus:outline-none focus:ring-2 focus:ring-current/50 transition-all resize-vertical"
             style={{ fontFamily: 'var(--font-merriweather), serif' }}
-            placeholder="Поделитесь своими мыслями, вопросами или предложениями..."
+            placeholder={t.contact.messagePlaceholder}
           />
         </div>
 
@@ -270,12 +276,12 @@ export default function Contact() {
             className="block text-sm font-medium mb-2"
             style={{ fontFamily: 'var(--font-merriweather), serif' }}
           >
-            Вопрос безопасности *
+            {t.contact.captcha} *
           </label>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <span 
-                className="text-lg font-medium px-3 py-2 border border-current/20 rounded-lg bg-current/5"
+                className="text-lg font-medium px-3 py-2 border border-current/20 rounded-lg consistent-bg"
                 style={{ fontFamily: 'var(--font-merriweather), serif' }}
               >
                 {isMounted ? captcha.question : '...'} = ?
@@ -287,9 +293,9 @@ export default function Contact() {
               value={captcha.userAnswer}
               onChange={handleCaptchaChange}
               required
-              className="w-24 px-3 py-2 border border-current/20 rounded-lg bg-transparent backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-current/50 transition-all text-center"
+              className="w-24 px-3 py-2 border border-current/20 rounded-lg consistent-bg focus:outline-none focus:ring-2 focus:ring-current/50 transition-all text-center"
               style={{ fontFamily: 'var(--font-merriweather), serif' }}
-              placeholder="?"
+              placeholder={t.contact.captchaPlaceholder}
             />
             <button
               type="button"
@@ -297,7 +303,7 @@ export default function Contact() {
               className="text-sm text-current/60 hover:text-current/80 transition-colors"
               style={{ fontFamily: 'var(--font-merriweather), serif' }}
             >
-              Обновить
+              {t.contact.refresh}
             </button>
           </div>
         </div>
@@ -313,12 +319,12 @@ export default function Contact() {
             {isSubmitting ? (
               <>
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
-                Отправка...
+                {t.contact.sending}
               </>
             ) : (
               <>
                 <Send size={16} />
-                Отправить сообщение
+                {t.contact.submit}
               </>
             )}
           </button>

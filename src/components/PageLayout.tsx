@@ -6,43 +6,50 @@ import { useState, useEffect, useRef } from "react"
 import { usePathname } from "next/navigation"
 import { Sun, Moon } from "lucide-react"
 import TransitionLink from "./TransitionLink"
+import { useLocale } from "../contexts/LocaleContext"
+import LanguageSwitcher from "./LanguageSwitcher"
 
 // Page order for navigation
 const PAGES = ["/", "/biography", "/media", "/contact"]
-const PAGE_NAMES = {
-  "/": "ГЛАВНАЯ",
-  "/biography": "БИОГРАФИЯ",
-  "/media": "МЕДИА",
-  "/contact": "ОБРАТНАЯ СВЯЗЬ",
-}
 
 interface PageLayoutProps {
   children: React.ReactNode
 }
 
 export default function PageLayout({ children }: PageLayoutProps) {
+  const { t, isLoading } = useLocale()
   const [isDark, setIsDark] = useState(false)
-  const [photoLoaded, setPhotoLoaded] = useState(false)
+  // Removed photoLoaded state - no longer needed without opacity animation
   const pathname = usePathname()
   const [isMounted, setIsMounted] = useState(false)
-  const [menuWidth, setMenuWidth] = useState(0)
   const [showScrollbar, setShowScrollbar] = useState(false)
-  const [transitionState, setTransitionState] = useState<'idle' | 'exiting' | 'entering'>('idle')
-  const [transitionDirection, setTransitionDirection] = useState<'left' | 'right'>('right')
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [transitionClass, setTransitionClass] = useState('')
   const menuRef = useRef<HTMLDivElement>(null)
   const contentZoneRef = useRef<HTMLDivElement>(null)
   const customScrollbarRef = useRef<HTMLDivElement>(null)
   const scrollThumbRef = useRef<HTMLDivElement>(null)
 
-  // Initialize theme and mounting
-  useEffect(() => {
-    // Check if dark class exists on document
-    const darkModeEnabled = document.documentElement.classList.contains("dark")
-    setIsDark(darkModeEnabled)
+  // Page names based on current locale
+  const PAGE_NAMES = {
+    "/": t.nav.main,
+    "/biography": t.nav.biography,
+    "/media": t.nav.media,
+    "/contact": t.nav.contact,
+  }
 
-    // Set mounted state
+  // Initialize theme and mounting - prevent hydration mismatch
+  useEffect(() => {
+    // Read the initial theme from the global flag set by the script
+    const initialTheme = window.__INITIAL_THEME__ || 'light'
+    const darkModeEnabled = initialTheme === 'dark'
+    
+    // Sync state with the actual DOM
+    setIsDark(darkModeEnabled)
     setIsMounted(true)
   }, [])
+
+  // No longer need menu width measurement - using CSS Grid layout
 
   // Reset scroll position when pathname changes
   useEffect(() => {
@@ -180,94 +187,62 @@ export default function PageLayout({ children }: PageLayoutProps) {
     document.addEventListener("wheel", handleGlobalScroll, { passive: false })
     document.addEventListener("keydown", handleGlobalKeyScroll, { passive: false })
 
-    // Prevent default scroll behavior on the document body
-    document.body.style.overflow = "hidden"
+    // Set overflow to auto to allow natural scrolling as fallback
+    document.body.style.overflow = "auto"
+    document.documentElement.style.overflow = "auto"
 
     return () => {
       document.removeEventListener("wheel", handleGlobalScroll)
       document.removeEventListener("keydown", handleGlobalKeyScroll)
-      document.body.style.overflow = "auto" // Restore default overflow
+      // Restore natural scrolling on cleanup
+      document.body.style.overflow = "auto"
+      document.documentElement.style.overflow = "auto"
     }
   }, [])
 
-  // Measure menu width with debounced resize listener for performance
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout
-    
-    const updateMenuWidth = () => {
-      clearTimeout(timeoutId)
-      timeoutId = setTimeout(() => {
-        if (menuRef.current) {
-          const width = menuRef.current.offsetWidth
-          setMenuWidth(width)
-        }
-      }, 16) // ~60fps debounce
-    }
 
-    updateMenuWidth()
 
-    // Debounced resize listener
-    window.addEventListener("resize", updateMenuWidth, { passive: true })
-    return () => {
-      clearTimeout(timeoutId)
-      window.removeEventListener("resize", updateMenuWidth)
-    }
-  }, [])
-
-  // Custom scrollbar functionality - Optimized for performance
+  // Custom scrollbar functionality - simple and immediate
   useEffect(() => {
     const contentZone = contentZoneRef.current
     const scrollThumb = scrollThumbRef.current
 
     if (!contentZone || !scrollThumb) return
 
-    let ticking = false
-    let resizeTimeout: NodeJS.Timeout
-
     const updateScrollbar = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const hasScrollableContent = contentZone.scrollHeight > contentZone.clientHeight
-          setShowScrollbar(hasScrollableContent)
+      const hasScrollableContent = contentZone.scrollHeight > contentZone.clientHeight
+      setShowScrollbar(hasScrollableContent)
 
-          if (hasScrollableContent) {
-            const scrollPercentage = contentZone.scrollTop / (contentZone.scrollHeight - contentZone.clientHeight)
-            const thumbHeight = Math.max(20, (contentZone.clientHeight / contentZone.scrollHeight) * window.innerHeight)
-            const availableSpace = window.innerHeight - thumbHeight
-            const thumbPosition = scrollPercentage * availableSpace
+      if (hasScrollableContent) {
+        const scrollPercentage = contentZone.scrollTop / (contentZone.scrollHeight - contentZone.clientHeight)
+        const thumbHeight = Math.max(20, (contentZone.clientHeight / contentZone.scrollHeight) * window.innerHeight)
+        const availableSpace = window.innerHeight - thumbHeight
+        const thumbPosition = scrollPercentage * availableSpace
 
-            scrollThumb.style.height = `${thumbHeight}px`
-            scrollThumb.style.transform = `translateY(${thumbPosition}px)`
-          }
-          ticking = false
-        })
-        ticking = true
+        scrollThumb.style.height = `${thumbHeight}px`
+        scrollThumb.style.transform = `translateY(${thumbPosition}px)`
       }
-    }
-
-    const debouncedUpdateScrollbar = () => {
-      clearTimeout(resizeTimeout)
-      resizeTimeout = setTimeout(updateScrollbar, 16)
     }
 
     // Initial update
     updateScrollbar()
 
-    // Optimized event listeners
-    contentZone.addEventListener("scroll", updateScrollbar, { passive: true })
-    window.addEventListener("resize", debouncedUpdateScrollbar, { passive: true })
+    // Simple event listeners without optimization
+    contentZone.addEventListener("scroll", updateScrollbar)
+    window.addEventListener("resize", updateScrollbar)
 
-    // Single ResizeObserver with throttling
-    const resizeObserver = new ResizeObserver(debouncedUpdateScrollbar)
+    // Simple ResizeObserver
+    const resizeObserver = new ResizeObserver(updateScrollbar)
     resizeObserver.observe(contentZone)
 
     return () => {
-      clearTimeout(resizeTimeout)
       contentZone.removeEventListener("scroll", updateScrollbar)
-      window.removeEventListener("resize", debouncedUpdateScrollbar)
+      window.removeEventListener("resize", updateScrollbar)
       resizeObserver.disconnect()
     }
   }, [])
+
+  // Remove redundant width update - width is now calculated directly in style
 
   const toggleTheme = () => {
     const newIsDark = !isDark
@@ -275,12 +250,14 @@ export default function PageLayout({ children }: PageLayoutProps) {
 
     if (newIsDark) {
       document.documentElement.classList.add("dark")
+      localStorage.setItem('theme', 'dark')
     } else {
       document.documentElement.classList.remove("dark")
+      localStorage.setItem('theme', 'light')
     }
   }
 
-  // Page transition handler
+  // Handle page transitions
   useEffect(() => {
     const handlePageTransition = (e: CustomEvent) => {
       const targetHref = e.detail.href
@@ -288,13 +265,12 @@ export default function PageLayout({ children }: PageLayoutProps) {
       const targetIndex = PAGES.indexOf(targetHref)
       
       // Determine animation direction based on page order
-      const direction = targetIndex > currentIndex ? 'right' : 'left'
-      setTransitionDirection(direction)
+      const goingRight = targetIndex > currentIndex
+      const exitClass = goingRight ? 'page-exit-left' : 'page-exit-right'
       
-      // Start the exit animation
-      setTransitionState('exiting')
-      
-      // The rest of the transitions will be handled by the pathname change useEffect
+      // Start exit animation
+      setIsTransitioning(true)
+      setTransitionClass(exitClass)
     }
     
     window.addEventListener('startPageTransition', handlePageTransition as EventListener)
@@ -304,43 +280,91 @@ export default function PageLayout({ children }: PageLayoutProps) {
     }
   }, [pathname])
   
-  // Reset transition state when pathname changes (new page loaded)
+  // Handle page change (when pathname updates after navigation)
   useEffect(() => {
-    if (transitionState === 'exiting') {
-      // Set entering state with a delay to ensure the new content is ready
-      setTimeout(() => {
-        setTransitionState('entering')
-      }, 50) // Small delay to ensure new content is ready
+    if (isTransitioning) {
+      // Wait for exit animation to complete, then start enter animation
+      const timer = setTimeout(() => {
+        // Figure out which direction we came from by checking the transition class
+        const wasExitingLeft = transitionClass === 'page-exit-left'
+        const enterClass = wasExitingLeft ? 'page-enter-from-right' : 'page-enter-from-left'
+        
+        setTransitionClass(enterClass)
+        
+        // Clear everything after enter animation completes
+        setTimeout(() => {
+          setIsTransitioning(false)
+          setTransitionClass('')
+        }, 400) // Match animation duration
+        
+      }, 400) // Wait for exit animation to complete
       
-      // After the complete animation sequence, reset to idle
-      setTimeout(() => {
-        setTransitionState('idle')
-      }, 600) // Total animation duration (exit: 300ms + delay: 300ms)
+      return () => clearTimeout(timer)
     }
-  }, [pathname, transitionState])
+  }, [pathname, isTransitioning, transitionClass])
 
-  // Trigger photo fade-in when component mounts
-  useEffect(() => {
-    setPhotoLoaded(true)
-  }, [])
+  // Removed photo fade-in effect - no longer needed
+
+  // Show loading state with layout-matching background to prevent flash
+  if (isLoading || !isMounted) {
+    return (
+      <div className={`h-screen transition-colors duration-300 ${isDark ? "dark" : ""}`}>
+        {/* Match the main layout background during loading */}
+        <div
+          className="fixed inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('/bg.png')`,
+            filter: isDark ? "invert(1)" : "none",
+            zIndex: 0,
+          }}
+        />
+        
+        {/* Match the portrait photo during loading */}
+        <div
+          className="fixed bg-cover bg-center"
+          style={{
+            backgroundImage: `url('/photos/1.jpg')`,
+            filter: "none",
+            width: "50%",
+            height: "100%",
+            right: "-14%",
+            top: "38%",
+            transform: "translateY(-50%) scale(1.47)",
+            transformOrigin: "center",
+            mask: "linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 38%)",
+            WebkitMask: "linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 38%)",
+            opacity: 1,
+            zIndex: 1,
+            overflow: "hidden",
+          }}
+        />
+        
+        {/* Centered loading spinner */}
+        <div className="relative z-10 h-full flex items-center justify-center">
+          <div 
+            className="animate-spin rounded-full h-8 w-8 border-b-2" 
+            style={{ borderColor: isDark ? '#ffffff' : '#000000' }}
+          ></div>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDark ? "dark" : ""}`}>
+    <div className={`h-screen overflow-hidden transition-colors duration-300 ${isDark ? "dark" : ""}`}>
       {/* Fixed Background Image - Optimized for performance */}
       <div
-        className="fixed inset-0 bg-cover bg-center bg-no-repeat transition-all duration-300"
+        className="fixed inset-0 bg-cover bg-center bg-no-repeat transition-all duration-800"
         style={{
           backgroundImage: `url('/bg.png')`,
           filter: isDark ? "invert(1)" : "none",
-          zIndex: 1,
-          willChange: "filter",
-          transform: "translateZ(0)", // GPU acceleration
+          zIndex: 0,
         }}
       />
 
       {/* Portrait photo - using 1.jpg for all pages for now */}
       <div
-        className="fixed bg-cover bg-center transition-opacity duration-1000 ease-out"
+        className="fixed bg-cover bg-center"
         style={{
           backgroundImage: `url('/photos/1.jpg')`,
           filter: "none",
@@ -348,22 +372,20 @@ export default function PageLayout({ children }: PageLayoutProps) {
           height: "100%",
           right: "-14%",
           top: "38%",
-          transform: "translateY(-50%) scale(1.47) translateZ(0)", // GPU acceleration
+          transform: "translateY(-50%) scale(1.47)",
           transformOrigin: "center",
           mask: "linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 38%)",
           WebkitMask: "linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 38%)",
-          opacity: photoLoaded ? 1 : 0,
+          opacity: 1, // Remove opacity animation to prevent flash
           zIndex: 1,
           overflow: "hidden",
-          willChange: "opacity", // Only animate opacity
-          backfaceVisibility: "hidden",
         }}
       />
 
       {/* Custom Scrollbar at Screen Edge - Only show when content is scrollable */}
       <div
         ref={customScrollbarRef}
-        className={`fixed z-4 transition-opacity duration-300 ${
+        className={`fixed z-20 transition-opacity duration-300 ${
           showScrollbar ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         style={{
@@ -388,42 +410,37 @@ export default function PageLayout({ children }: PageLayoutProps) {
         />
       </div>
 
-      {/* Fixed Theme Switcher Container - Above menu, right aligned with menu */}
+      {/* Main Layout Grid - Optimized alignment */}
       <div
-        className="fixed z-4 flex justify-start"
+        className="fixed z-10"
         style={{
-          top: "60px", // Above the menu
-          left: "6vw", // Same alignment as menu
-          right: "6vw", // Constrain to match Main Screen Section padding
-          width: menuWidth > 0 ? `${menuWidth}px` : "auto", // Exact match to menu width
-          maxWidth: "100%", // Respect the container constraints
-          // TEMPORARY BORDER - Theme Button Container
-          //border: "3px solid orange",
-          //boxSizing: "border-box",
-          padding: "8px", // Some padding inside the container
-		  paddingLeft: "1.5vw"
+          top: "60px",
+          left: "6vw",
+          right: "48%", // Stop well before the portrait area
+          bottom: "6vh",
+          display: "grid",
+          gridTemplateColumns: "max-content 1fr", // Menu column auto-sizes, content takes remaining space
+          gridTemplateRows: "auto auto 1fr", // Theme row, menu row, content row
+          gap: "clamp(1rem, 3vw, 3rem) 0", // Vertical gap between sections
         }}
       >
-        <button
-          onClick={toggleTheme}
-          className="theme-switcher flex items-center gap-2 px-4 py-2 rounded-full border border-current/20 bg-current/5 backdrop-blur-sm hover:bg-current/10 transition-all text-sm"
-        >
-          {isDark ? <Sun size={20} /> : <Moon size={20} />}
-          <span>{isDark ? "Светлая тема" : "Темная тема"}</span>
-        </button>
-      </div>
+        {/* Theme Switcher & Language Switcher - Grid item */}
+        <div className="flex justify-between items-center" style={{ gridColumn: "1", gridRow: "1" }}>
+          {/* Language Switcher on the left */}
+          <LanguageSwitcher />
+          
+          {/* Theme Switcher on the right */}
+          <button
+            onClick={toggleTheme}
+            className="theme-switcher flex items-center gap-2 px-4 py-2 rounded-full border border-current/20 frosted-glass hover:frosted-glass-hover transition-all text-sm"
+          >
+            {isDark ? <Sun size={20} /> : <Moon size={20} />}
+            <span>{isDark ? t.theme.light : t.theme.dark}</span>
+          </button>
+        </div>
 
-      {/* Fixed Navigation - Stays in place when scrolling */}
-      <nav
-        className="fixed z-3"
-        style={{
-          top: "128px", // Same as the original paddingTop
-          left: "6vw", // Same as the original paddingLeft
-          right: "6vw", // Constrain to match Main Screen Section padding
-        }}
-      >
-        <div className="w-full flex justify-start" style={{ margin: "0", padding: "0" }}>
-          {/* Menu Block - Responsive scaling, left aligned */}
+        {/* Navigation Menu - Grid item */}
+        <nav style={{ gridColumn: "1", gridRow: "2" }}>
           <div
             ref={menuRef}
             className="flex flex-col"
@@ -431,11 +448,8 @@ export default function PageLayout({ children }: PageLayoutProps) {
               margin: "0",
               padding: "0",
               width: "fit-content",
-              maxWidth: "100%", // This now respects the nav container's constraints
               minWidth: "0",
-              // TEMPORARY BORDER - Menu Object
-              //border: "3px solid blue",
-              //boxSizing: "border-box",
+              boxSizing: "border-box",
             }}
           >
             {/* Top gradient line */}
@@ -449,8 +463,6 @@ export default function PageLayout({ children }: PageLayoutProps) {
                   isDark ? "rgba(255,255,255,1)" : "rgba(0,0,0,1)"
                 } 8%, ${isDark ? "rgba(255,255,255,1)" : "rgba(0,0,0,1)"} 92%, transparent 100%)`,
                 zIndex: 3,
-                willChange: "background",
-                transform: "translateZ(0)",
               }}
             />
 
@@ -458,7 +470,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
             <ul
               className="flex relative font-light transition-colors duration-300"
               style={{
-                fontFamily: "var(--font-merriweather), serif",
+                fontFamily: "var(--font-serif)",
                 fontSize: "clamp(12px, 3vw, 44px)",
                 gap: "clamp(8px, 4vw, 71px)",
                 letterSpacing: "0px",
@@ -471,10 +483,8 @@ export default function PageLayout({ children }: PageLayoutProps) {
                 background: `linear-gradient(to right, transparent 0%, ${
                   isDark ? "rgba(0,0,0,1)" : "rgba(255,255,255,1)"
                 } 8%, ${isDark ? "rgba(0,0,0,1)" : "rgba(255,255,255,1)"} 92%, transparent 100%)`,
-                backdropFilter: "blur(0px)",
                 margin: "0",
                 width: "fit-content",
-                maxWidth: "100%",
                 minWidth: "0",
                 whiteSpace: "nowrap",
                 flexWrap: "nowrap", // Keep items in one line, scale font instead
@@ -520,91 +530,49 @@ export default function PageLayout({ children }: PageLayoutProps) {
                   isDark ? "rgba(255,255,255,1)" : "rgba(0,0,0,1)"
                 } 8%, ${isDark ? "rgba(255,255,255,1)" : "rgba(0,0,0,1)"} 92%, transparent 100%)`,
                 zIndex: 3,
-                willChange: "background",
-                transform: "translateZ(0)",
               }}
             />
           </div>
-        </div>
-      </nav>
+        </nav>
 
-      {/* Main Screen Section - Fixed height with 6% bottom margin */}
-      <section
-        className="fixed z-2 w-full flex flex-col"
-        style={{
-          top: "100px",
-          bottom: "6vh", // 6% bottom margin
-		  //paddingLeft: "7vw",
-          //left: "7.8vw",
-          //right: "6vw",
-          // TEMPORARY BORDER - Main Screen Section
-          //border: "3px solid red",
-          //boxSizing: "border-box",
-        }}
-      >
-        {/* Spacer for fixed menu + bottom margin */}
-        <div
-          style={{
-            height:
-              "calc(clamp(2px, 0.5vw, 4.5px) + clamp(6px, 1.5vw, 22px) + clamp(12px, 3vw, 44px) + clamp(6px, 1.5vw, 22px) + clamp(2px, 0.5vw, 4.5px) + clamp(1rem, 3vw, 3rem))",
-            width: "100%",
-            flexShrink: 0,
-          }}
-        />
-
-        {/* Content Zone - Fixed height with scrolling and gradient fades */}
+        {/* Content Area - Grid item, naturally aligned with menu */}
         <main
-          className="flex-1 w-full flex justify-start items-start relative"
+          className={`${transitionClass}`}
           style={{
-            margin: "0",
-            padding: "0",
-            overflow: "hidden", // Hide overflow to contain gradients
+            gridColumn: "1", // Same column as menu for natural alignment
+            gridRow: "3",
+            overflow: "hidden",
+            position: "relative",
+            // Ensure content is clipped during animations
+            clipPath: isTransitioning ? "inset(0)" : "none",
+			transformStyle: "preserve-3d"
           }}
         >
-          {/* Content container - FIXED width matching menu with scrolling */}
+          {/* Content container with overflow hidden to prevent scroll issues during transitions */}
           <div
-            className={`transition-opacity duration-300 relative ${
-              transitionState === 'exiting'
-                ? transitionDirection === 'right'
-                  ? 'content-area-slide-out-left'
-                  : 'content-area-slide-out-right'
-                : transitionState === 'entering'
-                ? transitionDirection === 'right'
-                  ? 'content-area-slide-in-right'
-                  : 'content-area-slide-in-left'
-                : ''
-            }`}
+            className={`@container relative`}
             style={{
-              // Fixed width matching the menu
-              width: menuWidth > 0 ? `calc(${menuWidth}px - 3vw)` : "fit-content",
-              maxWidth: "100%",
-              minWidth: "0",
+              width: "calc(100% - 1.5vw)",
               height: "100%",
               padding: "0",
-              marginLeft: "7.5vw",
-              // Start with opacity 0 when in entering state to prevent flash
-              opacity: transitionState === 'entering' && !document.querySelector('.content-area-slide-in-right, .content-area-slide-in-left') ? 0 : 1,
-              // TEMPORARY BORDER - Content Zone
-              //border: "3px solid green",
-              //boxSizing: "border-box",
+              marginLeft: "1.5vw",
+              boxSizing: "border-box",
+              overflow: "hidden", // Hide overflow during transitions
             }}
           >
-            {/* Scrollable content area with mask for fade effect - HIDDEN SCROLLBAR */}
+            {/* Scrollable content area with hidden scrollbar */}
             <div
               ref={contentZoneRef}
               className="w-full h-full overflow-y-auto overflow-x-hidden"
               style={{
-                padding: "clamp(2rem, 5vw, 3rem) 0 clamp(1rem, 3vw, 2rem) 0", // More top padding, less bottom
+                padding: "0 0 clamp(1rem, 3vw, 2rem) 0",
                 margin: "0",
                 wordWrap: "break-word",
                 overflowWrap: "break-word",
-                // HIDE DEFAULT SCROLLBAR
                 scrollbarWidth: "none", // Firefox
                 msOverflowStyle: "none", // IE/Edge
-                // Mask to fade content at top and bottom edges
-                //mask: "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,1) clamp(1rem, 4vw, 2.5rem), rgba(0,0,0,1) calc(100% - clamp(1rem, 4vw, 2.5rem)), transparent 100%)",
-                //WebkitMask:
-                //  "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,1) clamp(1rem, 4vw, 2.5rem), rgba(0,0,0,1) calc(100% - clamp(1rem, 4vw, 2.5rem)), transparent 100%)",
+                // Disable scroll during transitions
+                pointerEvents: isTransitioning ? 'none' : 'auto',
               }}
             >
               {/* Content wrapper to ensure top-left alignment */}
@@ -617,6 +585,8 @@ export default function PageLayout({ children }: PageLayoutProps) {
                   alignItems: "flex-start",
                   justifyContent: "flex-start",
                   textAlign: "left",
+                  // Prevent content interaction during transitions
+                  pointerEvents: isTransitioning ? 'none' : 'auto',
                 }}
               >
                 {children}
@@ -624,7 +594,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
             </div>
           </div>
         </main>
-      </section>
+      </div>
 
       {/* Hide scrollbar for webkit browsers */}
       <style jsx>{`
