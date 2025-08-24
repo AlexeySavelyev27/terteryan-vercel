@@ -24,7 +24,7 @@ export default function LanguageSwitcher() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 rounded-full border border-current/20 frosted-glass hover:frosted-glass-hover transition-all text-sm"
+        className="flex items-center gap-2 px-3 py-2 rounded-full unified-button-bg transition-all text-sm"
         style={{ minWidth: '140px', justifyContent: 'space-between' }}
       >
         <Globe size={16} />
