@@ -62,10 +62,9 @@ export default function MusicCategory({ onBack }: MusicCategoryProps) {
       </div>
 
       {/* Additional track list for better visibility */}
-      <div 
-        className="mt-8 frosted-glass"
-        style={{ 
-          border: '1px solid rgba(128, 128, 128, 0.2)',
+      <div
+        className="mt-8 unified-button-bg"
+        style={{
           borderRadius: '12px',
           padding: '1.5rem'
         }}
