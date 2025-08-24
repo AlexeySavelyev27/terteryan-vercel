@@ -437,7 +437,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
           {/* Theme Switcher first */}
           <button
             onClick={toggleTheme}
-            className="theme-switcher flex items-center gap-2 px-4 py-2 rounded-full unified-button-bg transition-all duration-300 hover:shadow-lg text-sm group"
+            className="theme-switcher flex items-center gap-2 px-4 py-2 rounded-full unified-button-bg transition-all duration-300 hover:shadow-lg text-sm group cursor-pointer"
           >
             {isDark ? <Sun size={20} /> : <Moon size={20} />}
             <span className="group-hover:opacity-80 transition-opacity">{isDark ? t.theme.light : t.theme.dark}</span>
