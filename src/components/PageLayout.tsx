@@ -461,14 +461,11 @@ export default function PageLayout({ children }: PageLayoutProps) {
           >
             {/* Top gradient line */}
             <div
-              className="transition-colors duration-300 relative"
+              className="menu-gradient-line relative"
               style={{
                 height: "clamp(2px, 0.5vw, 4.5px)",
                 marginBottom: "0px",
                 width: "100%",
-                background: `linear-gradient(to right, transparent 0%, ${
-                  isDark ? "rgba(255,255,255,1)" : "rgba(0,0,0,1)"
-                } 8%, ${isDark ? "rgba(255,255,255,1)" : "rgba(0,0,0,1)"} 92%, transparent 100%)`,
                 zIndex: 3,
               }}
             />
