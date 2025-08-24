@@ -639,6 +639,28 @@ a:focus-visible {
   background: rgba(50, 50, 50, 0.6); /* Lighter input background for dark theme */
 }
 
+/* Unified button style matching contact form inputs */
+.unified-button-bg {
+  background: rgba(245, 245, 245, 0.6); /* Same as input-bg for light theme */
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  transition: all 0.3s ease;
+}
+
+.dark .unified-button-bg {
+  background: rgba(50, 50, 50, 0.6); /* Same as input-bg for dark theme */
+  border: 1px solid rgba(128, 128, 128, 0.3);
+}
+
+.unified-button-bg:hover {
+  background: rgba(235, 235, 235, 0.8);
+  border-color: rgba(128, 128, 128, 0.4);
+}
+
+.dark .unified-button-bg:hover {
+  background: rgba(65, 65, 65, 0.8);
+  border-color: rgba(128, 128, 128, 0.5);
+}
+
 /* Print styles */
 @media print {
   .fixed {
