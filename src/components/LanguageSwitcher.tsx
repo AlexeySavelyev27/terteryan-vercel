@@ -21,10 +21,10 @@ export default function LanguageSwitcher() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative group">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 rounded-full unified-button-bg transition-all text-sm"
+        className="flex items-center gap-2 px-3 py-2 rounded-full unified-button-bg transition-all duration-300 hover:shadow-lg text-sm"
         style={{ minWidth: '140px', justifyContent: 'space-between' }}
       >
         <Globe size={16} />
