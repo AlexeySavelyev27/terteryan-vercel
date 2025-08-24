@@ -60,8 +60,15 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     }
   }, [locale, isMounted]);
 
+  const handleSetLocale = (newLocale: 'ru' | 'en') => {
+    setLocale(newLocale);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('locale', newLocale);
+    }
+  };
+
   return (
-    <LocaleContext.Provider value={{ locale, setLocale, t, isLoading }}>
+    <LocaleContext.Provider value={{ locale, setLocale: handleSetLocale, t, isLoading }}>
       {children}
     </LocaleContext.Provider>
   );
