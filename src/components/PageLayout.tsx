@@ -425,18 +425,26 @@ export default function PageLayout({ children }: PageLayoutProps) {
         }}
       >
         {/* Theme Switcher & Language Switcher - Grid item */}
-        <div className="flex justify-between items-center" style={{ gridColumn: "1", gridRow: "1" }}>
-          {/* Language Switcher on the left */}
-          <LanguageSwitcher />
-          
-          {/* Theme Switcher on the right */}
+        <div
+          className="flex items-center gap-4"
+          style={{
+            gridColumn: "1",
+            gridRow: "1",
+            marginLeft: "1.5vw",
+            width: "calc(100% - 1.5vw)"
+          }}
+        >
+          {/* Theme Switcher first */}
           <button
             onClick={toggleTheme}
-            className="theme-switcher flex items-center gap-2 px-4 py-2 rounded-full unified-button-bg transition-all text-sm"
+            className="theme-switcher flex items-center gap-2 px-4 py-2 rounded-full unified-button-bg transition-all duration-300 hover:shadow-lg text-sm group"
           >
             {isDark ? <Sun size={20} /> : <Moon size={20} />}
-            <span>{isDark ? t.theme.light : t.theme.dark}</span>
+            <span className="group-hover:opacity-80 transition-opacity">{isDark ? t.theme.light : t.theme.dark}</span>
           </button>
+
+          {/* Language Switcher second */}
+          <LanguageSwitcher />
         </div>
 
         {/* Navigation Menu - Grid item */}
