@@ -293,7 +293,7 @@ export default function Contact() {
               value={captcha.userAnswer}
               onChange={handleCaptchaChange}
               required
-              className="w-24 px-3 py-2 border border-current/20 rounded-lg consistent-bg focus:outline-none focus:ring-2 focus:ring-current/50 transition-all text-center"
+              className="w-24 px-3 py-2 border border-current/20 rounded-lg input-bg focus:outline-none focus:ring-2 focus:ring-current/50 transition-all text-center"
               style={{ fontFamily: 'var(--font-merriweather), serif' }}
               placeholder={t.contact.captchaPlaceholder}
             />
