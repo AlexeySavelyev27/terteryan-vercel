@@ -263,7 +263,7 @@ export default function Contact() {
             onChange={handleChange}
             required
             rows={6}
-            className="w-full px-4 py-3 border border-current/20 rounded-lg consistent-bg focus:outline-none focus:ring-2 focus:ring-current/50 transition-all resize-vertical"
+            className="w-full px-4 py-3 border border-current/20 rounded-lg input-bg focus:outline-none focus:ring-2 focus:ring-current/50 transition-all resize-vertical"
             style={{ fontFamily: 'var(--font-merriweather), serif' }}
             placeholder={t.contact.messagePlaceholder}
           />
