@@ -10,7 +10,7 @@ import PublicationsCategory from '../../src/components/media/PublicationsCategor
 
 type MediaCategory = 'home' | 'music' | 'video' | 'photo' | 'publications';
 
-// Define the order for transitions: home ↔ music ↔ video ↔ photo ↔ publications
+// Define the order for transitions: home ��� music ↔ video ↔ photo ↔ publications
 const MEDIA_SECTIONS = ['home', 'music', 'video', 'photo', 'publications'] as const;
 
 const categoryIcons = {
@@ -144,10 +144,9 @@ export default function Media() {
                 }}
               >
                 <div
-                  className="border transition-all duration-300 hover:shadow-lg group-hover:border-current/40 frosted-glass hover:frosted-glass-hover"
+                  className="unified-button-bg transition-all duration-300 hover:shadow-lg"
                   style={{
                     borderRadius: '16px',
-                    borderColor: 'rgba(128, 128, 128, 0.2)',
                     padding: '2rem'
                   }}
                 >
