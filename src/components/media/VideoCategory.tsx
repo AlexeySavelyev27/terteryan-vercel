@@ -61,10 +61,9 @@ export default function VideoCategory({ onBack }: VideoCategoryProps) {
             onClick={() => handleVideoClick(video.videoUrl)}
           >
             <div
-              className="border transition-all duration-300 hover:shadow-lg frosted-glass hover:frosted-glass-hover"
+              className="unified-button-bg transition-all duration-300 hover:shadow-lg"
               style={{
                 borderRadius: '12px',
-                borderColor: 'rgba(128, 128, 128, 0.2)',
                 overflow: 'hidden'
               }}
             >
