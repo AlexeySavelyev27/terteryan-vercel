@@ -241,7 +241,7 @@ export default function Contact() {
             name="subject"
             value={formData.subject}
             onChange={handleChange}
-            className="w-full px-4 py-3 border border-current/20 rounded-lg consistent-bg focus:outline-none focus:ring-2 focus:ring-current/50 transition-all"
+            className="w-full px-4 py-3 border border-current/20 rounded-lg input-bg focus:outline-none focus:ring-2 focus:ring-current/50 transition-all"
             style={{ fontFamily: 'var(--font-merriweather), serif' }}
             placeholder={t.contact.subjectPlaceholder}
           />
