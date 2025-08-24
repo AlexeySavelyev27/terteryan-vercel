@@ -217,7 +217,7 @@ export default function Contact() {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-current/20 rounded-lg consistent-bg focus:outline-none focus:ring-2 focus:ring-current/50 transition-all"
+              className="w-full px-4 py-3 border border-current/20 rounded-lg input-bg focus:outline-none focus:ring-2 focus:ring-current/50 transition-all"
               style={{ 
 			  fontFamily: 'var(--font-merriweather), serif',
 			  }}
