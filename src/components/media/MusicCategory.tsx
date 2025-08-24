@@ -24,7 +24,7 @@ export default function MusicCategory({ onBack }: MusicCategoryProps) {
       {/* Back Button */}
       <button
         onClick={onBack}
-        className="mb-6 text-lg opacity-70 hover:opacity-100 transition-opacity"
+        className="mb-6 text-lg opacity-70 hover:opacity-100 transition-all px-4 py-2 rounded-lg unified-button-bg"
         style={{ fontFamily: 'var(--font-merriweather), serif' }}
       >
         {t.media.backToCategories}
