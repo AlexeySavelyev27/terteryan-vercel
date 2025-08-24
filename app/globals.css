@@ -621,13 +621,22 @@ a:focus-visible {
 
 /* Consistent background - soothing colors for light/dark themes */
 .consistent-bg {
-  background: rgba(245, 245, 245, 0.6); /* Lighter soothing light background */
+  background: rgba(235, 235, 235, 0.7); /* Soothing light background */
   border: 1px solid rgba(0, 0, 0, 0.4);
 }
 
 .dark .consistent-bg {
-  background: rgba(50, 50, 50, 0.6); /* Lighter soothing dark background */
+  background: rgba(35, 35, 35, 0.7); /* Soothing dark background */
   border: 1px solid rgba(100, 100, 100, 0.4);
+}
+
+/* Lighter input backgrounds specifically for form fields */
+.input-bg {
+  background: rgba(245, 245, 245, 0.6); /* Lighter input background for light theme */
+}
+
+.dark .input-bg {
+  background: rgba(50, 50, 50, 0.6); /* Lighter input background for dark theme */
 }
 
 /* Print styles */
