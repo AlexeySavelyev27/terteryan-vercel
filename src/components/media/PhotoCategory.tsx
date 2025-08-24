@@ -78,7 +78,7 @@ export default function PhotoCategory({ onBack }: PhotoCategoryProps) {
         {photoContent.items.map((photo, index) => (
           <div
             key={photo.id}
-            className="group cursor-pointer relative overflow-hidden rounded-lg border border-current/20 frosted-glass hover:frosted-glass-hover"
+            className="group cursor-pointer relative overflow-hidden rounded-lg unified-button-bg"
             style={{
               aspectRatio: index % 3 === 0 ? '4/5' : index % 5 === 0 ? '5/4' : '1/1', // Varied aspect ratios for interesting layout
             }}
