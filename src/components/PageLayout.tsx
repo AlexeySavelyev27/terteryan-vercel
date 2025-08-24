@@ -350,7 +350,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
   }
 
   return (
-    <div className={`h-screen overflow-hidden transition-colors duration-300 ${isDark ? "dark" : ""}`}>
+    <div className="h-screen overflow-hidden transition-colors duration-300">
       {/* Fixed Background Image - Optimized for performance */}
       <div
         className="fixed inset-0 bg-cover bg-center bg-no-repeat transition-all duration-800"
