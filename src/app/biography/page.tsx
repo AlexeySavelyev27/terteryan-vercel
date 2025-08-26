@@ -17,14 +17,30 @@ export default function BiographyPage() {
       <div className="space-y-12">
         {biographyContent.sections.map((section, index) => (
           <section key={index} className="space-y-4">
-            <h3 className="text-xl md:text-2xl font-light border-b pb-2">{section.title}</h3>
-            <div className="space-y-4">
-              {section.content.map((paragraph, pIndex) => (
-                <p key={pIndex} className="text-base leading-relaxed">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
+            {section.type === "heading" && (
+              <h3 className="text-xl md:text-2xl font-light border-b pb-2">{section.title}</h3>
+            )}
+            {section.type === "paragraph" && section.content && (
+              <div className="space-y-4">
+                {section.content.map((paragraph, pIndex) => (
+                  <p key={pIndex} className="text-base leading-relaxed">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            )}
+            {section.type === "works" && section.items && (
+              <div className="space-y-4">
+                <h3 className="text-xl md:text-2xl font-light border-b pb-2">{section.title}</h3>
+                <ul className="space-y-2">
+                  {section.items.map((item, itemIndex) => (
+                    <li key={itemIndex} className="text-base">
+                      • {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </section>
         ))}
       </div>
