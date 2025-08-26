@@ -10,6 +10,8 @@ export interface Translation {
   
   // Main page
   main: {
+    title1: string;
+    title2: string;
     subtitle1: string;
     subtitle2: string;
     listenMusic: string;
