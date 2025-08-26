@@ -15,7 +15,6 @@ export async function GET(request: NextRequest) {
     const forwarded = request.headers.get('x-forwarded-for');
     const ip = forwarded ? forwarded.split(',')[0] : 
                request.headers.get('x-real-ip') || 
-               request.ip || 
                '127.0.0.1';
 
     // For local development, default to a Russian IP
