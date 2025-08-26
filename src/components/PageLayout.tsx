@@ -623,11 +623,11 @@ export default function PageLayout({ children }: PageLayoutProps) {
         }
       `}</style>
       
-      {/* Image Preloader - runs in background and shows progress */}
+      {/* Image Preloader - runs in background without showing progress */}
       {isMounted && isPreloadingImages && (
         <ImagePreloader
           onComplete={handlePreloadComplete}
-          showProgress={true}
+          showProgress={false}
         />
       )}
     </div>
