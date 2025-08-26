@@ -54,7 +54,7 @@ export default function VideoCategory({ onBack }: VideoCategoryProps) {
     thumbnail: video.thumbnail,
     title: locale === 'en' ? (video.titleEn || video.title) : video.title,
     description: locale === 'en' ? (video.descriptionEn || video.description) : video.description,
-    year: video.year,
+    year: String(video.year),
     duration: video.duration,
   }))
 
