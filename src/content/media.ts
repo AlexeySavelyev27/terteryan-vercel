@@ -3,19 +3,62 @@ import type { MediaContent } from './types';
 
 export const mediaContent: MediaContent = {
   title: "МЕДИА",
-  subtitle: "Аудиозаписи произведений",
+  subtitle: "Коллекция музыкальных произведений, записей и видеоматериалов",
   
-  // Music tracks can be added here
-  // This will integrate with your existing MusicPlayer component
-  tracks: [
-    // Add your tracks here when you have them
-    // Example:
-    // {
-    //   id: "track-1",
-    //   title: "Симфония №1",
-    //   composer: "М. Тертерян",
-    //   duration: "25:30",
-    //   src: "/audio/symphony-1.mp3"
-    // }
+  audio: [
+    {
+      title: "Симфония №1",
+      description: "Первая симфония композитора, написанная в 1969 году",
+      year: "1969",
+      duration: "42:15",
+      genre: "Симфоническая музыка"
+    },
+    {
+      title: "Концерт для виолончели с оркестром",
+      description: "Виртуозный концерт для виолончели и симфонического оркестра", 
+      year: "1963",
+      duration: "35:20",
+      genre: "Концерт"
+    },
+    {
+      title: "Камерная симфония",
+      description: "Произведение для камерного состава оркестра",
+      year: "1971", 
+      duration: "28:45",
+      genre: "Камерная музыка"
+    }
+  ],
+
+  video: [
+    {
+      title: "Исполнение Симфонии №1",
+      description: "Запись концерта с участием Московского симфонического оркестра",
+      year: "1975",
+      duration: "42:15"
+    },
+    {
+      title: "Интервью с композитором", 
+      description: "Беседа о творческом пути и музыкальной философии",
+      year: "1980",
+      duration: "25:30"
+    }
+  ],
+
+  scores: [
+    {
+      title: "Симфония №1",
+      description: "Партитура для полного симфонического оркестра",
+      instrumentation: "Полный оркестр"
+    },
+    {
+      title: "Струнный квартет №2",
+      description: "Камерное произведение для струнного квартета",
+      instrumentation: "2 скрипки, альт, виолончель"
+    },
+    {
+      title: "Концерт для виолончели",
+      description: "Партитура концерта для виолончели с оркестром",
+      instrumentation: "Солист и оркестр"
+    }
   ]
 };

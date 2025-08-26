@@ -28,12 +28,24 @@ export interface BiographyContent {
 export interface MediaContent {
   title: string;
   subtitle: string;
-  tracks: Array<{
-    id: string;
+  audio: Array<{
     title: string;
-    composer: string;
+    description: string;
+    year: string;
     duration: string;
-    src: string;
+    genre?: string;
+    externalLink?: string;
+  }>;
+  video: Array<{
+    title: string;
+    description: string;
+    year: string;
+    duration: string;
+  }>;
+  scores: Array<{
+    title: string;
+    description: string;
+    instrumentation: string;
   }>;
 }
 
