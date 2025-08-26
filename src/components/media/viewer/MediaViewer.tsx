@@ -36,7 +36,7 @@ export default function MediaViewer({ items, initialIndex, isOpen, onClose }: Me
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const controlsTimeoutRef = useRef<NodeJS.Timeout>();
+  const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { theme, systemTheme } = useTheme();
   
   // Enhanced theme detection with DOM fallback
