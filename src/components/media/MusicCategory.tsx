@@ -74,7 +74,7 @@ export default function MusicCategory({ onBack }: MusicCategoryProps) {
     composer: locale === 'en' ? (currentTrack.composerEn || currentTrack.composer) : currentTrack.composer,
     duration: currentTrack.duration || '--:--',
     src: currentTrack.src
-  } : null
+  } : undefined
 
   return (
     <div className="w-full h-full">
