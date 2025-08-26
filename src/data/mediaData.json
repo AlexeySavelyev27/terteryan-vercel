@@ -1,0 +1,634 @@
+{
+  "ru": {
+    "music": {
+      "tracks": [
+        {
+          "id": "b62f7206-bbe9-442c-b404-f59927a9b7ff",
+          "composer": "М. Б. Тертерян",
+          "title": "Вариации фа минор",
+          "year": 1978,
+          "genre": "",
+          "description": "Описание",
+          "titleEn": "Variations in F minor",
+          "composerEn": "M. B. Terteryan",
+          "yearEn": 1978,
+          "descriptionEn": "Desc",
+          "src": "/audio/original/audio_1756072391120_b62f7206-bbe9-442c-b404-f59927a9b7ff.mp3",
+          "fileUrl": "/audio/original/audio_1756072391120_b62f7206-bbe9-442c-b404-f59927a9b7ff.mp3",
+          "duration": "10:39"
+        },
+        {
+          "id": "19177f3b-ce22-474a-bc15-d76fdbefc174",
+          "title": "Соната для виолончели",
+          "composer": "М. Б. Тертерян",
+          "year": 1966,
+          "description": "Описание",
+          "titleEn": "Cello Sonata",
+          "composerEn": "M. B. Terteryan",
+          "yearEn": 1986,
+          "descriptionEn": "Desc",
+          "src": "/audio/original/audio_1756072562417_19177f3b-ce22-474a-bc15-d76fdbefc174.mp3",
+          "fileUrl": "/audio/original/audio_1756072562417_19177f3b-ce22-474a-bc15-d76fdbefc174.mp3",
+          "duration": "17:25"
+        },
+        {
+          "id": "90148d3c-74a8-476d-aca2-0027c594861d",
+          "title": "Поэма для трубы №3",
+          "composer": "М. Б. Тертерян",
+          "year": 1976,
+          "description": "Описание",
+          "titleEn": "Poem for trumpet No. 3",
+          "composerEn": "M. B. Terteryan",
+          "yearEn": 1976,
+          "descriptionEn": "Desc",
+          "src": "/audio/original/audio_1756142010417_90148d3c-74a8-476d-aca2-0027c594861d.wav",
+          "fileUrl": "/audio/original/audio_1756142010417_90148d3c-74a8-476d-aca2-0027c594861d.wav",
+          "duration": "3:46"
+        },
+        {
+          "id": "36365097-cb58-4552-9434-cf4695b09978",
+          "title": "Юмореска для кларнета и фортепиано",
+          "composer": "М. Б. Тертерян",
+          "year": 1986,
+          "description": "Описание",
+          "titleEn": "Humoresque for clarinet and piano",
+          "composerEn": "M. B. Terteryan",
+          "yearEn": 1987,
+          "descriptionEn": "Desc",
+          "src": "/audio/original/audio_1756142102588_36365097-cb58-4552-9434-cf4695b09978.wav",
+          "fileUrl": "/audio/original/audio_1756142102588_36365097-cb58-4552-9434-cf4695b09978.wav",
+          "duration": "2:20"
+        },
+        {
+          "id": "ffbf7b3e-34b4-414f-81d7-b389000f9f07",
+          "title": "Аист",
+          "composer": "М. Б. Тертерян",
+          "year": 1976,
+          "description": "Описание",
+          "titleEn": "Stork",
+          "composerEn": "M. B. Terteryan",
+          "yearEn": 1976,
+          "descriptionEn": "Desc",
+          "src": "/audio/original/audio_1756142259725_ffbf7b3e-34b4-414f-81d7-b389000f9f07.wav",
+          "fileUrl": "/audio/original/audio_1756142259725_ffbf7b3e-34b4-414f-81d7-b389000f9f07.wav",
+          "duration": "1:48"
+        }
+      ],
+      "listTitle": "Список произведений"
+    },
+    "video": {
+      "items": [
+        {
+          "id": "38d47386-d0a0-4b2e-98a3-a3dc1c4af44a",
+          "title": "М. Тертерян - П. Хазанов",
+          "description": "Описание",
+          "year": 1997,
+          "titleEn": "M. Terteryan and P. Khazanov",
+          "descriptionEn": "Desc",
+          "yearEn": 1997,
+          "src": "/videos/original/video_1756142367157_38d47386-d0a0-4b2e-98a3-a3dc1c4af44a.mp4",
+          "fileUrl": "/videos/original/video_1756142367157_38d47386-d0a0-4b2e-98a3-a3dc1c4af44a.mp4"
+        }
+      ],
+      "watchVideo": "Смотреть видео",
+      "sourceNote": "Видеоматериалы предоставлены из архивов."
+    },
+    "photos": {
+      "items": [
+        {
+          "id": "50492537-69be-4be0-bc1b-ee28044a259e",
+          "title": "Фото 1",
+          "description": "Описание 1",
+          "year": 1956,
+          "location": "Место 1",
+          "event": "Что на фото 1",
+          "titleEn": "Photo 1",
+          "descriptionEn": "Description 1",
+          "yearEn": 1956,
+          "locationEn": "Place 1",
+          "eventEn": "What's on the photo 1",
+          "src": "/photos/original/photo_1756057394055_50492537-69be-4be0-bc1b-ee28044a259e.jpg",
+          "fileUrl": "/photos/original/photo_1756057394055_50492537-69be-4be0-bc1b-ee28044a259e.jpg"
+        },
+        {
+          "id": "28b8f805-0713-4050-b98b-39114edf5120",
+          "title": "Фото 3",
+          "description": "Описание 3",
+          "year": 1956,
+          "location": "Место 3",
+          "event": "",
+          "titleEn": "Photo 3",
+          "descriptionEn": "Desc 3",
+          "yearEn": 1956,
+          "locationEn": "Place 3",
+          "src": "/photos/original/photo_1756057487264_28b8f805-0713-4050-b98b-39114edf5120.jpg",
+          "fileUrl": "/photos/original/photo_1756057487264_28b8f805-0713-4050-b98b-39114edf5120.jpg"
+        },
+        {
+          "id": "75d73915-5589-4e34-b87a-b9f6f07e3d0a",
+          "title": "Фото 4",
+          "description": "Описание 4",
+          "year": 1956,
+          "location": "Место 4",
+          "titleEn": "Photo 4",
+          "descriptionEn": "Desc 4",
+          "yearEn": 1956,
+          "locationEn": "Place 4",
+          "src": "/photos/original/photo_1756057513805_75d73915-5589-4e34-b87a-b9f6f07e3d0a.jpg",
+          "fileUrl": "/photos/original/photo_1756057513805_75d73915-5589-4e34-b87a-b9f6f07e3d0a.jpg"
+        },
+        {
+          "id": "a7236ce4-4c11-410f-97ae-88a160d83a22",
+          "title": "Фото 5",
+          "description": "Описание 5",
+          "year": 1956,
+          "location": "Место 5",
+          "titleEn": "Photo 5",
+          "descriptionEn": "Desc 5",
+          "yearEn": 1956,
+          "locationEn": "Place 5",
+          "src": "/photos/original/photo_1756057569454_a7236ce4-4c11-410f-97ae-88a160d83a22.jpg",
+          "fileUrl": "/photos/original/photo_1756057569454_a7236ce4-4c11-410f-97ae-88a160d83a22.jpg"
+        },
+        {
+          "id": "f762f822-b103-406a-bdab-d684572f47b9",
+          "title": "Фото 6",
+          "description": "Описание 6",
+          "year": 1956,
+          "location": "Место 6",
+          "titleEn": "Photo 6",
+          "descriptionEn": "Desc 6",
+          "yearEn": 1956,
+          "src": "/photos/original/photo_1756057603249_f762f822-b103-406a-bdab-d684572f47b9.jpg",
+          "fileUrl": "/photos/original/photo_1756057603249_f762f822-b103-406a-bdab-d684572f47b9.jpg"
+        },
+        {
+          "id": "3c431421-57bb-4d99-bd9d-3f4236869867",
+          "title": "Фото 7",
+          "description": "Описание 7",
+          "year": 1956,
+          "location": "Место 7",
+          "titleEn": "Photo 7",
+          "descriptionEn": "Desc 7",
+          "yearEn": 1956,
+          "locationEn": "Place 7",
+          "src": "/photos/original/photo_1756057636347_3c431421-57bb-4d99-bd9d-3f4236869867.jpg",
+          "fileUrl": "/photos/original/photo_1756057636347_3c431421-57bb-4d99-bd9d-3f4236869867.jpg"
+        },
+        {
+          "id": "48853e56-9743-4b96-b79e-76a9d43f89e2",
+          "title": "Фото 8",
+          "description": "Описание 8",
+          "year": 1965,
+          "location": "Место 8",
+          "titleEn": "Photo 8",
+          "descriptionEn": "Desc 8",
+          "yearEn": 1967,
+          "locationEn": "Place 8",
+          "src": "/photos/original/photo_1756057670091_48853e56-9743-4b96-b79e-76a9d43f89e2.jpg",
+          "fileUrl": "/photos/original/photo_1756057670091_48853e56-9743-4b96-b79e-76a9d43f89e2.jpg"
+        },
+        {
+          "id": "09d29c1a-460c-427d-b158-450575a80cc6",
+          "title": "Фото 9",
+          "description": "Описание 9",
+          "year": 1965,
+          "location": "Место 9",
+          "titleEn": "Photo 9",
+          "descriptionEn": "Desc 9",
+          "yearEn": 1976,
+          "locationEn": "Place 9",
+          "src": "/photos/original/photo_1756057699305_09d29c1a-460c-427d-b158-450575a80cc6.jpg",
+          "fileUrl": "/photos/original/photo_1756057699305_09d29c1a-460c-427d-b158-450575a80cc6.jpg"
+        },
+        {
+          "id": "99fa0196-4a5c-46ca-8b8d-33af8a818453",
+          "title": "Фото 10",
+          "description": "Описание 10",
+          "year": 1967,
+          "location": "Место 10",
+          "titleEn": "Photo 10",
+          "descriptionEn": "Desc 10",
+          "yearEn": 1967,
+          "src": "/photos/original/photo_1756057742099_99fa0196-4a5c-46ca-8b8d-33af8a818453.jpg",
+          "fileUrl": "/photos/original/photo_1756057742099_99fa0196-4a5c-46ca-8b8d-33af8a818453.jpg"
+        },
+        {
+          "id": "f70f875f-b84a-438c-8fa2-c458c3fc1e6b",
+          "title": "Фото 11",
+          "description": "Описание",
+          "year": 1969,
+          "titleEn": "Photo",
+          "descriptionEn": "Desc",
+          "yearEn": 1675,
+          "src": "/photos/original/photo_1756057766408_f70f875f-b84a-438c-8fa2-c458c3fc1e6b.jpg",
+          "fileUrl": "/photos/original/photo_1756057766408_f70f875f-b84a-438c-8fa2-c458c3fc1e6b.jpg"
+        },
+        {
+          "id": "41de4d10-6cb0-4608-8322-99b5616a0d10",
+          "title": "Фото",
+          "description": "Описание",
+          "year": 1977,
+          "titleEn": "Photo",
+          "descriptionEn": "Desc",
+          "yearEn": 1987,
+          "src": "/photos/original/photo_1756057786435_41de4d10-6cb0-4608-8322-99b5616a0d10.jpg",
+          "fileUrl": "/photos/original/photo_1756057786435_41de4d10-6cb0-4608-8322-99b5616a0d10.jpg"
+        },
+        {
+          "id": "54334497-efe2-4a81-8e0d-566c93ff21dc",
+          "title": "Фото",
+          "description": "Описание",
+          "year": 1978,
+          "titleEn": "Photo",
+          "descriptionEn": "Desc",
+          "yearEn": 1976,
+          "src": "/photos/original/photo_1756057814855_54334497-efe2-4a81-8e0d-566c93ff21dc.jpg",
+          "fileUrl": "/photos/original/photo_1756057814855_54334497-efe2-4a81-8e0d-566c93ff21dc.jpg"
+        },
+        {
+          "id": "8f9fc764-cde8-4d02-87a1-6545ae3e791a",
+          "title": "Фото ",
+          "description": "Описание",
+          "year": 1978,
+          "titleEn": "Photo",
+          "descriptionEn": "Desc",
+          "yearEn": 1999,
+          "src": "/photos/original/photo_1756057836323_8f9fc764-cde8-4d02-87a1-6545ae3e791a.jpg",
+          "fileUrl": "/photos/original/photo_1756057836323_8f9fc764-cde8-4d02-87a1-6545ae3e791a.jpg"
+        },
+        {
+          "id": "628ef45b-2ebb-440b-81eb-513e4a70942c",
+          "title": "Фото ",
+          "description": "Описание",
+          "year": 1997,
+          "titleEn": "Photo",
+          "descriptionEn": "Desc",
+          "yearEn": 1999,
+          "src": "/photos/original/photo_1756057850608_628ef45b-2ebb-440b-81eb-513e4a70942c.jpg",
+          "fileUrl": "/photos/original/photo_1756057850608_628ef45b-2ebb-440b-81eb-513e4a70942c.jpg"
+        },
+        {
+          "id": "3008da04-a439-4fed-9cfe-93038c36063a",
+          "title": "Фото",
+          "description": "Описание",
+          "year": 1999,
+          "titleEn": "Photo",
+          "descriptionEn": "Desc",
+          "yearEn": 1999,
+          "src": "/photos/original/photo_1756057864674_3008da04-a439-4fed-9cfe-93038c36063a.jpg",
+          "fileUrl": "/photos/original/photo_1756057864674_3008da04-a439-4fed-9cfe-93038c36063a.jpg"
+        },
+        {
+          "id": "a3e5ade0-7901-4fe2-a7f5-ececb0760668",
+          "title": "Фото",
+          "description": "Описание",
+          "year": 1999,
+          "titleEn": "Photo",
+          "descriptionEn": "Desc",
+          "yearEn": 1999,
+          "src": "/photos/original/photo_1756057881207_a3e5ade0-7901-4fe2-a7f5-ececb0760668.jpg",
+          "fileUrl": "/photos/original/photo_1756057881207_a3e5ade0-7901-4fe2-a7f5-ececb0760668.jpg"
+        },
+        {
+          "id": "da93c468-fd1d-42f5-a98e-85c9a4cf09f5",
+          "title": "Фото",
+          "description": "Описание",
+          "year": 1999,
+          "titleEn": "Photo",
+          "descriptionEn": "Desc",
+          "yearEn": 1999,
+          "src": "/photos/original/photo_1756057896968_da93c468-fd1d-42f5-a98e-85c9a4cf09f5.jpg",
+          "fileUrl": "/photos/original/photo_1756057896968_da93c468-fd1d-42f5-a98e-85c9a4cf09f5.jpg"
+        }
+      ],
+      "sourceNote": "Фотографии из семейного архива и коллекции Московского музыкального колледжа."
+    },
+    "publications": {
+      "items": [],
+      "downloadPdf": "Скачать PDF",
+      "pages": "стр.",
+      "sourceNote": "Все материалы предоставлены с разрешения правообладателей."
+    }
+  },
+  "en": {
+    "music": {
+      "tracks": [
+        {
+          "id": "b62f7206-bbe9-442c-b404-f59927a9b7ff",
+          "composer": "М. Б. Тертерян",
+          "title": "Вариации фа минор",
+          "year": 1978,
+          "genre": "",
+          "description": "Описание",
+          "titleEn": "Variations in F minor",
+          "composerEn": "M. B. Terteryan",
+          "yearEn": 1978,
+          "descriptionEn": "Desc",
+          "src": "/audio/original/audio_1756072391120_b62f7206-bbe9-442c-b404-f59927a9b7ff.mp3",
+          "fileUrl": "/audio/original/audio_1756072391120_b62f7206-bbe9-442c-b404-f59927a9b7ff.mp3",
+          "duration": "10:39"
+        },
+        {
+          "id": "19177f3b-ce22-474a-bc15-d76fdbefc174",
+          "title": "Соната для виолончели",
+          "composer": "М. Б. Тертерян",
+          "year": 1966,
+          "description": "Описание",
+          "titleEn": "Cello Sonata",
+          "composerEn": "M. B. Terteryan",
+          "yearEn": 1986,
+          "descriptionEn": "Desc",
+          "src": "/audio/original/audio_1756072562417_19177f3b-ce22-474a-bc15-d76fdbefc174.mp3",
+          "fileUrl": "/audio/original/audio_1756072562417_19177f3b-ce22-474a-bc15-d76fdbefc174.mp3",
+          "duration": "17:25"
+        },
+        {
+          "id": "90148d3c-74a8-476d-aca2-0027c594861d",
+          "title": "Поэма для трубы №3",
+          "composer": "М. Б. Тертерян",
+          "year": 1976,
+          "description": "Описание",
+          "titleEn": "Poem for trumpet No. 3",
+          "composerEn": "M. B. Terteryan",
+          "yearEn": 1976,
+          "descriptionEn": "Desc",
+          "src": "/audio/original/audio_1756142010417_90148d3c-74a8-476d-aca2-0027c594861d.wav",
+          "fileUrl": "/audio/original/audio_1756142010417_90148d3c-74a8-476d-aca2-0027c594861d.wav"
+        },
+        {
+          "id": "36365097-cb58-4552-9434-cf4695b09978",
+          "title": "Юмореска для кларнета и фортепиано",
+          "composer": "М. Б. Тертерян",
+          "year": 1986,
+          "description": "Описание",
+          "titleEn": "Humoresque for clarinet and piano",
+          "composerEn": "M. B. Terteryan",
+          "yearEn": 1987,
+          "descriptionEn": "Desc",
+          "src": "/audio/original/audio_1756142102588_36365097-cb58-4552-9434-cf4695b09978.wav",
+          "fileUrl": "/audio/original/audio_1756142102588_36365097-cb58-4552-9434-cf4695b09978.wav"
+        },
+        {
+          "id": "ffbf7b3e-34b4-414f-81d7-b389000f9f07",
+          "title": "Аист",
+          "composer": "М. Б. Тертерян",
+          "year": 1976,
+          "description": "Описание",
+          "titleEn": "Stork",
+          "composerEn": "M. B. Terteryan",
+          "yearEn": 1976,
+          "descriptionEn": "Desc",
+          "src": "/audio/original/audio_1756142259725_ffbf7b3e-34b4-414f-81d7-b389000f9f07.wav",
+          "fileUrl": "/audio/original/audio_1756142259725_ffbf7b3e-34b4-414f-81d7-b389000f9f07.wav"
+        }
+      ],
+      "listTitle": "List of Works"
+    },
+    "video": {
+      "items": [
+        {
+          "id": "38d47386-d0a0-4b2e-98a3-a3dc1c4af44a",
+          "title": "М. Тертерян - П. Хазанов",
+          "description": "Описание",
+          "year": 1997,
+          "titleEn": "M. Terteryan and P. Khazanov",
+          "descriptionEn": "Desc",
+          "yearEn": 1997,
+          "src": "/videos/original/video_1756142367157_38d47386-d0a0-4b2e-98a3-a3dc1c4af44a.mp4",
+          "fileUrl": "/videos/original/video_1756142367157_38d47386-d0a0-4b2e-98a3-a3dc1c4af44a.mp4"
+        }
+      ],
+      "watchVideo": "Watch Video",
+      "sourceNote": "Video materials provided from archives."
+    },
+    "photos": {
+      "items": [
+        {
+          "id": "1",
+          "src": "/photos/1.jpg",
+          "title": "At the Music College",
+          "titleEn": "At the Music College",
+          "description": "Mikhail Babkenovich at the piano in a college auditorium",
+          "descriptionEn": "Mikhail Babkenovich at the piano in a college auditorium",
+          "year": "1985",
+          "location": "Moscow Music College",
+          "locationEn": "Moscow Music College"
+        },
+        {
+          "id": "50492537-69be-4be0-bc1b-ee28044a259e",
+          "title": "Фото 1",
+          "description": "Описание 1",
+          "year": 1956,
+          "location": "Место 1",
+          "event": "Что на фото 1",
+          "titleEn": "Photo 1",
+          "descriptionEn": "Description 1",
+          "yearEn": 1956,
+          "locationEn": "Place 1",
+          "eventEn": "What's on the photo 1",
+          "src": "/photos/original/photo_1756057394055_50492537-69be-4be0-bc1b-ee28044a259e.jpg",
+          "fileUrl": "/photos/original/photo_1756057394055_50492537-69be-4be0-bc1b-ee28044a259e.jpg"
+        },
+        {
+          "id": "28b8f805-0713-4050-b98b-39114edf5120",
+          "title": "Фото 3",
+          "description": "Описание 3",
+          "year": 1956,
+          "location": "Место 3",
+          "event": "",
+          "titleEn": "Photo 3",
+          "descriptionEn": "Desc 3",
+          "yearEn": 1956,
+          "locationEn": "Place 3",
+          "src": "/photos/original/photo_1756057487264_28b8f805-0713-4050-b98b-39114edf5120.jpg",
+          "fileUrl": "/photos/original/photo_1756057487264_28b8f805-0713-4050-b98b-39114edf5120.jpg"
+        },
+        {
+          "id": "75d73915-5589-4e34-b87a-b9f6f07e3d0a",
+          "title": "Фото 4",
+          "description": "Описание 4",
+          "year": 1956,
+          "location": "Место 4",
+          "titleEn": "Photo 4",
+          "descriptionEn": "Desc 4",
+          "yearEn": 1956,
+          "locationEn": "Place 4",
+          "src": "/photos/original/photo_1756057513805_75d73915-5589-4e34-b87a-b9f6f07e3d0a.jpg",
+          "fileUrl": "/photos/original/photo_1756057513805_75d73915-5589-4e34-b87a-b9f6f07e3d0a.jpg"
+        },
+        {
+          "id": "a7236ce4-4c11-410f-97ae-88a160d83a22",
+          "title": "Фото 5",
+          "description": "Описание 5",
+          "year": 1956,
+          "location": "Место 5",
+          "titleEn": "Photo 5",
+          "descriptionEn": "Desc 5",
+          "yearEn": 1956,
+          "locationEn": "Place 5",
+          "src": "/photos/original/photo_1756057569454_a7236ce4-4c11-410f-97ae-88a160d83a22.jpg",
+          "fileUrl": "/photos/original/photo_1756057569454_a7236ce4-4c11-410f-97ae-88a160d83a22.jpg"
+        },
+        {
+          "id": "f762f822-b103-406a-bdab-d684572f47b9",
+          "title": "Фото 6",
+          "description": "Описание 6",
+          "year": 1956,
+          "location": "Место 6",
+          "titleEn": "Photo 6",
+          "descriptionEn": "Desc 6",
+          "yearEn": 1956,
+          "src": "/photos/original/photo_1756057603249_f762f822-b103-406a-bdab-d684572f47b9.jpg",
+          "fileUrl": "/photos/original/photo_1756057603249_f762f822-b103-406a-bdab-d684572f47b9.jpg"
+        },
+        {
+          "id": "3c431421-57bb-4d99-bd9d-3f4236869867",
+          "title": "Фото 7",
+          "description": "Описание 7",
+          "year": 1956,
+          "location": "Место 7",
+          "titleEn": "Photo 7",
+          "descriptionEn": "Desc 7",
+          "yearEn": 1956,
+          "locationEn": "Place 7",
+          "src": "/photos/original/photo_1756057636347_3c431421-57bb-4d99-bd9d-3f4236869867.jpg",
+          "fileUrl": "/photos/original/photo_1756057636347_3c431421-57bb-4d99-bd9d-3f4236869867.jpg"
+        },
+        {
+          "id": "48853e56-9743-4b96-b79e-76a9d43f89e2",
+          "title": "Фото 8",
+          "description": "Описание 8",
+          "year": 1965,
+          "location": "Место 8",
+          "titleEn": "Photo 8",
+          "descriptionEn": "Desc 8",
+          "yearEn": 1967,
+          "locationEn": "Place 8",
+          "src": "/photos/original/photo_1756057670091_48853e56-9743-4b96-b79e-76a9d43f89e2.jpg",
+          "fileUrl": "/photos/original/photo_1756057670091_48853e56-9743-4b96-b79e-76a9d43f89e2.jpg"
+        },
+        {
+          "id": "09d29c1a-460c-427d-b158-450575a80cc6",
+          "title": "Фото 9",
+          "description": "Описание 9",
+          "year": 1965,
+          "location": "Место 9",
+          "titleEn": "Photo 9",
+          "descriptionEn": "Desc 9",
+          "yearEn": 1976,
+          "locationEn": "Place 9",
+          "src": "/photos/original/photo_1756057699305_09d29c1a-460c-427d-b158-450575a80cc6.jpg",
+          "fileUrl": "/photos/original/photo_1756057699305_09d29c1a-460c-427d-b158-450575a80cc6.jpg"
+        },
+        {
+          "id": "99fa0196-4a5c-46ca-8b8d-33af8a818453",
+          "title": "Фото 10",
+          "description": "Описание 10",
+          "year": 1967,
+          "location": "Место 10",
+          "titleEn": "Photo 10",
+          "descriptionEn": "Desc 10",
+          "yearEn": 1967,
+          "src": "/photos/original/photo_1756057742099_99fa0196-4a5c-46ca-8b8d-33af8a818453.jpg",
+          "fileUrl": "/photos/original/photo_1756057742099_99fa0196-4a5c-46ca-8b8d-33af8a818453.jpg"
+        },
+        {
+          "id": "f70f875f-b84a-438c-8fa2-c458c3fc1e6b",
+          "title": "Фото 11",
+          "description": "Описание",
+          "year": 1969,
+          "titleEn": "Photo",
+          "descriptionEn": "Desc",
+          "yearEn": 1675,
+          "src": "/photos/original/photo_1756057766408_f70f875f-b84a-438c-8fa2-c458c3fc1e6b.jpg",
+          "fileUrl": "/photos/original/photo_1756057766408_f70f875f-b84a-438c-8fa2-c458c3fc1e6b.jpg"
+        },
+        {
+          "id": "41de4d10-6cb0-4608-8322-99b5616a0d10",
+          "title": "Фото",
+          "description": "Описание",
+          "year": 1977,
+          "titleEn": "Photo",
+          "descriptionEn": "Desc",
+          "yearEn": 1987,
+          "src": "/photos/original/photo_1756057786435_41de4d10-6cb0-4608-8322-99b5616a0d10.jpg",
+          "fileUrl": "/photos/original/photo_1756057786435_41de4d10-6cb0-4608-8322-99b5616a0d10.jpg"
+        },
+        {
+          "id": "54334497-efe2-4a81-8e0d-566c93ff21dc",
+          "title": "Фото",
+          "description": "Описание",
+          "year": 1978,
+          "titleEn": "Photo",
+          "descriptionEn": "Desc",
+          "yearEn": 1976,
+          "src": "/photos/original/photo_1756057814855_54334497-efe2-4a81-8e0d-566c93ff21dc.jpg",
+          "fileUrl": "/photos/original/photo_1756057814855_54334497-efe2-4a81-8e0d-566c93ff21dc.jpg"
+        },
+        {
+          "id": "8f9fc764-cde8-4d02-87a1-6545ae3e791a",
+          "title": "Фото ",
+          "description": "Описание",
+          "year": 1978,
+          "titleEn": "Photo",
+          "descriptionEn": "Desc",
+          "yearEn": 1999,
+          "src": "/photos/original/photo_1756057836323_8f9fc764-cde8-4d02-87a1-6545ae3e791a.jpg",
+          "fileUrl": "/photos/original/photo_1756057836323_8f9fc764-cde8-4d02-87a1-6545ae3e791a.jpg"
+        },
+        {
+          "id": "628ef45b-2ebb-440b-81eb-513e4a70942c",
+          "title": "Фото ",
+          "description": "Описание",
+          "year": 1997,
+          "titleEn": "Photo",
+          "descriptionEn": "Desc",
+          "yearEn": 1999,
+          "src": "/photos/original/photo_1756057850608_628ef45b-2ebb-440b-81eb-513e4a70942c.jpg",
+          "fileUrl": "/photos/original/photo_1756057850608_628ef45b-2ebb-440b-81eb-513e4a70942c.jpg"
+        },
+        {
+          "id": "3008da04-a439-4fed-9cfe-93038c36063a",
+          "title": "Фото",
+          "description": "Описание",
+          "year": 1999,
+          "titleEn": "Photo",
+          "descriptionEn": "Desc",
+          "yearEn": 1999,
+          "src": "/photos/original/photo_1756057864674_3008da04-a439-4fed-9cfe-93038c36063a.jpg",
+          "fileUrl": "/photos/original/photo_1756057864674_3008da04-a439-4fed-9cfe-93038c36063a.jpg"
+        },
+        {
+          "id": "a3e5ade0-7901-4fe2-a7f5-ececb0760668",
+          "title": "Фото",
+          "description": "Описание",
+          "year": 1999,
+          "titleEn": "Photo",
+          "descriptionEn": "Desc",
+          "yearEn": 1999,
+          "src": "/photos/original/photo_1756057881207_a3e5ade0-7901-4fe2-a7f5-ececb0760668.jpg",
+          "fileUrl": "/photos/original/photo_1756057881207_a3e5ade0-7901-4fe2-a7f5-ececb0760668.jpg"
+        },
+        {
+          "id": "da93c468-fd1d-42f5-a98e-85c9a4cf09f5",
+          "title": "Фото",
+          "description": "Описание",
+          "year": 1999,
+          "titleEn": "Photo",
+          "descriptionEn": "Desc",
+          "yearEn": 1999,
+          "src": "/photos/original/photo_1756057896968_da93c468-fd1d-42f5-a98e-85c9a4cf09f5.jpg",
+          "fileUrl": "/photos/original/photo_1756057896968_da93c468-fd1d-42f5-a98e-85c9a4cf09f5.jpg"
+        }
+      ],
+      "sourceNote": "Photographs from family archives and the Moscow Music College collection."
+    },
+    "publications": {
+      "items": [],
+      "downloadPdf": "Download PDF",
+      "pages": "pages",
+      "sourceNote": "All materials are provided with permission from copyright holders."
+    }
+  }
+}

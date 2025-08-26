@@ -1,0 +1,22 @@
+# Sample PDF Document
+
+This is a placeholder PDF document for the Terteryan website.
+
+In a real implementation, this would contain actual interviews, articles, and publications about the composer.
+
+The publications section is designed to handle various types of documents:
+- Interviews
+- Articles
+- Research papers
+- Catalogs
+- Collections
+
+Each document includes metadata such as:
+- Author
+- Publication year
+- Number of pages
+- File size
+- Language
+- Description
+
+This allows visitors to easily find and download relevant materials about Mikhail Babkenovich Terteryan's life and work.

@@ -1,0 +1,143 @@
+"use client"
+
+import { useEffect, useRef } from "react"
+
+interface FitTextProps {
+  children: string
+  className?: string
+  style?: React.CSSProperties
+}
+
+export default function FitText({ children, className = "", style = {} }: FitTextProps) {
+  const textRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const resizeText = () => {
+      const element = textRef.current
+      if (!element) return
+
+      // Find the content container and get its ACTUAL usable width
+      let container = element
+      let attempts = 0
+      
+      while (container && attempts < 25) {
+        const computedStyle = window.getComputedStyle(container)
+        const width = container.offsetWidth
+        const rect = container.getBoundingClientRect()
+        
+        // Look for the grid container that should be positioned with left: 6vw, right: 48%
+        if ((computedStyle.position === 'fixed' && width < 700 && width > 250) || 
+            (computedStyle.gridColumn === '1' && width < 700 && width > 250) || 
+            (rect.left > 50 && rect.right < window.innerWidth * 0.6 && width > 250)) {
+          
+          // Get the computed style to account for padding
+          const paddingLeft = parseFloat(computedStyle.paddingLeft) || 0
+          const paddingRight = parseFloat(computedStyle.paddingRight) || 0
+          const marginLeft = parseFloat(computedStyle.marginLeft) || 0
+          const marginRight = parseFloat(computedStyle.marginRight) || 0
+          
+          // Calculate the actual available space for text
+          const availableWidth = width - paddingLeft - paddingRight - marginLeft - marginRight
+          
+          console.log(`📏 Found container:`, {
+            totalWidth: width,
+            paddingLeft,
+            paddingRight,
+            marginLeft,
+            marginRight,
+            availableWidth
+          })
+          
+          // Scale text to fill the ENTIRE available width
+          let fontSize = 400 // Start even bigger
+          element.style.fontSize = fontSize + 'px'
+          
+          // Reduce until it fits, but aim for maximum usage
+          while (element.scrollWidth > availableWidth && fontSize > 12) {
+            fontSize -= 0.5 // Use smaller increments for precision
+            element.style.fontSize = fontSize + 'px'
+          }
+          
+          // Fine-tune: try to get as close as possible to full width
+          while (element.scrollWidth < availableWidth - 5 && fontSize < 400) {
+            fontSize += 0.2
+            element.style.fontSize = fontSize + 'px'
+            
+            // If we went over, back off slightly
+            if (element.scrollWidth > availableWidth) {
+              fontSize -= 0.2
+              element.style.fontSize = fontSize + 'px'
+              break
+            }
+          }
+          
+          const utilization = ((element.scrollWidth / availableWidth) * 100).toFixed(1)
+          console.log(`✅ OPTIMIZED "${children}": ${fontSize.toFixed(1)}px, text: ${element.scrollWidth}px, available: ${availableWidth}px, utilization: ${utilization}%`)
+          return
+        }
+        
+        container = container.parentElement
+        attempts++
+      }
+      
+      // Manual calculation fallback - but account for padding/margins in the layout
+      const viewportWidth = window.innerWidth
+      const leftMargin = viewportWidth * 0.06 // 6vw
+      const rightConstraint = viewportWidth * 0.48 // 48% from right  
+      const layoutPadding = viewportWidth * 0.015 // 1.5vw from the content area margin
+      const expectedWidth = viewportWidth - rightConstraint - leftMargin - layoutPadding - 20 // Extra margin for safety
+      
+      console.log(`📐 Manual calc: expected width ${expectedWidth}px`)
+      
+      if (expectedWidth > 100) {
+        let fontSize = 400
+        element.style.fontSize = fontSize + 'px'
+        
+        while (element.scrollWidth > expectedWidth && fontSize > 12) {
+          fontSize -= 0.5
+          element.style.fontSize = fontSize + 'px'
+        }
+        
+        // Fine-tune for maximum width usage
+        while (element.scrollWidth < expectedWidth - 5 && fontSize < 400) {
+          fontSize += 0.2
+          element.style.fontSize = fontSize + 'px'
+          if (element.scrollWidth > expectedWidth) {
+            fontSize -= 0.2
+            element.style.fontSize = fontSize + 'px'
+            break
+          }
+        }
+        
+        const utilization = ((element.scrollWidth / expectedWidth) * 100).toFixed(1)
+        console.log(`📐 MANUAL "${children}": ${fontSize.toFixed(1)}px, text: ${element.scrollWidth}px, expected: ${expectedWidth}px, utilization: ${utilization}%`)
+      }
+    }
+
+    const timer = setTimeout(resizeText, 400)
+    const handleResize = () => setTimeout(resizeText, 100)
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [children])
+
+  return (
+    <div
+      ref={textRef}
+      className={className}
+      style={{
+        fontSize: '100px',
+        lineHeight: 1,
+        whiteSpace: 'nowrap',
+        width: '100%',
+        display: 'block',
+        ...style
+      }}
+    >
+      {children}
+    </div>
+  )
+}

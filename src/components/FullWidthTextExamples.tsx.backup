@@ -1,0 +1,79 @@
+"use client"
+
+import FullWidthText from "./FullWidthText"
+
+export default function FullWidthTextExamples() {
+  return (
+    <div className="space-y-8">
+      {/* Example 1: CSS Class - Simple */}
+      <div>
+        <h3 className="text-lg font-semibold mb-2">CSS Class Method:</h3>
+        <div className="text-full-width">TERTERYAN</div>
+      </div>
+
+      {/* Example 2: CSS Class - With wrapping */}
+      <div>
+        <h3 className="text-lg font-semibold mb-2">CSS Class with Wrapping:</h3>
+        <div className="text-full-width-wrap">Михаил Бабкенович Тертерян</div>
+      </div>
+
+      {/* Example 3: CSS Class - Title style */}
+      <div>
+        <h3 className="text-lg font-semibold mb-2">CSS Class Title:</h3>
+        <div className="text-full-width-title">COMPOSER</div>
+      </div>
+
+      {/* Example 4: React Component - Default */}
+      <div>
+        <h3 className="text-lg font-semibold mb-2">React Component (Auto-scaling):</h3>
+        <FullWidthText>DYNAMIC SCALING</FullWidthText>
+      </div>
+
+      {/* Example 5: React Component - Custom props */}
+      <div>
+        <h3 className="text-lg font-semibold mb-2">React Component (Custom):</h3>
+        <FullWidthText
+          minFontSize={20}
+          maxFontSize={100}
+          fontFamily="var(--font-serif)"
+          fontWeight={400}
+          lineHeight={1.2}
+          allowWrap={true}
+        >
+          Armenian Classical Music
+        </FullWidthText>
+      </div>
+
+      {/* Example 6: Multiple lines with different scaling */}
+      <div>
+        <h3 className="text-lg font-semibold mb-2">Multiple Scaled Lines:</h3>
+        <div className="space-y-2">
+          <FullWidthText
+            minFontSize={24}
+            maxFontSize={80}
+            fontWeight="300"
+            className="text-muted-foreground"
+          >
+            COMPOSER
+          </FullWidthText>
+          <FullWidthText
+            minFontSize={32}
+            maxFontSize={120}
+            fontFamily="var(--font-serif)"
+            fontWeight="bold"
+          >
+            TERTERYAN
+          </FullWidthText>
+          <FullWidthText
+            minFontSize={16}
+            maxFontSize={60}
+            fontWeight="400"
+            className="text-muted-foreground"
+          >
+            1929 - 1996
+          </FullWidthText>
+        </div>
+      </div>
+    </div>
+  )
+}
