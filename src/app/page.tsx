@@ -13,7 +13,10 @@ export default function HomePage() {
 
       {/* Brief introduction */}
       <div className="space-y-6 max-w-3xl">
-        <p className="text-base md:text-lg leading-relaxed">{biographyContent.sections[0].content[0]}</p>
+        <p className="text-base md:text-lg leading-relaxed">
+          {biographyContent.sections.find(section => section.type === 'paragraph' && section.content)?. content?.[0] || 
+           "Выдающийся армянский композитор, чье творчество оставило неизгладимый след в мировой музыкальной культуре XX века."}
+        </p>
 
         <div className="flex flex-col sm:flex-row gap-4">
           <Button asChild size="lg" className="w-fit">
@@ -29,10 +32,15 @@ export default function HomePage() {
       <div className="space-y-6 pt-8">
         <h2 className="text-2xl md:text-3xl font-light">Избранные произведения</h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {biographyContent.sections.slice(1, 4).map((section, index) => (
+          {biographyContent.sections
+            .filter(section => section.type === 'paragraph' && section.content)
+            .slice(0, 3)
+            .map((section, index) => (
             <div key={index} className="space-y-3 p-6 rounded-lg border bg-card">
-              <h3 className="text-lg font-medium">{section.title}</h3>
-              <p className="text-sm text-muted-foreground line-clamp-3">{section.content[0]}</p>
+              <h3 className="text-lg font-medium">{section.title || `Раздел ${index + 1}`}</h3>
+              <p className="text-sm text-muted-foreground line-clamp-3">
+                {section.content?.[0]?.substring(0, 150)}...
+              </p>
             </div>
           ))}
         </div>
