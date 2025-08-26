@@ -81,9 +81,6 @@ export default function Home() {
           <h6>
             {t.main.subtitle1}
           </h6>
-          <h6>
-            {t.main.subtitle2}
-          </h6>
         </div>
       </div>
 
