@@ -78,8 +78,8 @@ export default function RootLayout({
               (function() {
                 try {
                   var savedTheme = localStorage.getItem('theme');
-                  var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                  var darkModeEnabled = savedTheme ? savedTheme === 'dark' : systemDark;
+                  // Default to light theme if no saved preference
+                  var darkModeEnabled = savedTheme === 'dark';
                   
                   // Set a flag for the client component to read
                   window.__INITIAL_THEME__ = darkModeEnabled ? 'dark' : 'light';
@@ -87,9 +87,12 @@ export default function RootLayout({
                   // Apply theme immediately to prevent flash
                   if (darkModeEnabled) {
                     document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
                   }
                 } catch (e) {
                   window.__INITIAL_THEME__ = 'light';
+                  document.documentElement.classList.remove('dark');
                 }
               })();
             `,

@@ -45,9 +45,17 @@ export default function PageLayout({ children }: PageLayoutProps) {
   useEffect(() => {
     setIsMounted(true)
     
-    // Only after mounting, sync with actual DOM state
+    // Check if there's a saved theme preference, default to light theme
+    const savedTheme = localStorage.getItem('theme')
     const isDarkFromDOM = document.documentElement.classList.contains('dark')
+    
+    // Use DOM state first (set by the script), fallback to light theme
     setIsDark(isDarkFromDOM)
+    
+    // If no saved preference exists, save light as default
+    if (!savedTheme) {
+      localStorage.setItem('theme', 'light')
+    }
     
     // Start image preloading after the page is mounted
     setIsPreloadingImages(true)
