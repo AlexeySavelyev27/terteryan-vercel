@@ -1,9 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Compiler optimizations
+  // Compiler optimizations  
   compiler: {
-    // Remove console logs in production
     removeConsole: process.env.NODE_ENV === 'production',
   },
   
@@ -12,18 +11,15 @@ const nextConfig: NextConfig = {
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 60,
     domains: ['localhost', 'hebbkx1anhila5yf.public.blob.vercel-storage.com'],
-    // Keep unoptimized for development/deployment flexibility
     unoptimized: process.env.NODE_ENV === 'development',
   },
   
   // Build settings for deployment
   eslint: {
-    // Only ignore during builds in development
     ignoreDuringBuilds: process.env.NODE_ENV === 'development',
   },
   typescript: {
-    // Only ignore build errors in development
-    ignoreBuildErrors: process.env.NODE_ENV === 'development',
+    ignoreBuildErrors: process.env.NODE_ENV === 'development', 
   },
   
   // Performance optimizations
@@ -43,7 +39,7 @@ const nextConfig: NextConfig = {
             value: '*',
           },
           {
-            key: 'Access-Control-Allow-Methods',
+            key: 'Access-Control-Allow-Methods', 
             value: 'GET, POST, PUT, DELETE, OPTIONS',
           },
           {

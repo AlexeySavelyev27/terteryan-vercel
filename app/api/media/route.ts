@@ -6,7 +6,7 @@ import { MediaData, defaultMediaData } from '../../../src/data/mediaContent';
 
 const DATA_FILE = path.join(process.cwd(), 'src', 'data', 'mediaData.json');
 
-// Helper function to read media data
+// Helper function to read media data (NOT EXPORTED)
 async function readMediaData(): Promise<MediaData> {
   try {
     if (existsSync(DATA_FILE)) {
@@ -20,7 +20,7 @@ async function readMediaData(): Promise<MediaData> {
   }
 }
 
-// Helper function to write media data
+// Helper function to write media data (NOT EXPORTED)
 async function writeMediaData(data: MediaData): Promise<void> {
   try {
     await writeFile(DATA_FILE, JSON.stringify(data, null, 2), 'utf-8');
@@ -34,7 +34,7 @@ async function writeMediaData(data: MediaData): Promise<void> {
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const type = searchParams.get('type'); // 'music', 'video', 'photos', 'publications'
+    const type = searchParams.get('type');
     const locale = searchParams.get('locale') || 'ru';
     
     const mediaData = await readMediaData();
@@ -81,12 +81,10 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Generate unique ID if not provided
     if (!item.id) {
       item.id = Date.now().toString();
     }
     
-    // Add item to the appropriate array
     if (type === 'music') {
       localeData.music.tracks.push(item);
     } else {
@@ -108,7 +106,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// PUT - Update existing media item
+// PUT - Update existing media item  
 export async function PUT(request: NextRequest) {
   try {
     const { type, locale, item } = await request.json();
@@ -130,7 +128,6 @@ export async function PUT(request: NextRequest) {
       );
     }
     
-    // Find and update item
     let found = false;
     if (type === 'music') {
       const trackIndex = localeData.music.tracks.findIndex(track => track.id === item.id);
@@ -174,7 +171,7 @@ export async function DELETE(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const type = searchParams.get('type');
-    const locale = searchParams.get('locale');
+    const locale = searchParams.get('locale'); 
     const id = searchParams.get('id');
     
     if (!type || !locale || !id) {
@@ -194,7 +191,6 @@ export async function DELETE(request: NextRequest) {
       );
     }
     
-    // Find and remove item
     let found = false;
     if (type === 'music') {
       const trackIndex = localeData.music.tracks.findIndex(track => track.id === id);
