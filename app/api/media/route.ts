@@ -7,7 +7,7 @@ import { MediaData, defaultMediaData } from '../../../src/data/mediaContent';
 const DATA_FILE = path.join(process.cwd(), 'src', 'data', 'mediaData.json');
 
 // Helper function to read media data
-export async function readMediaData(): Promise<MediaData> {
+async function readMediaData(): Promise<MediaData> {
   try {
     if (existsSync(DATA_FILE)) {
       const data = await readFile(DATA_FILE, 'utf-8');
@@ -21,7 +21,7 @@ export async function readMediaData(): Promise<MediaData> {
 }
 
 // Helper function to write media data
-export async function writeMediaData(data: MediaData): Promise<void> {
+async function writeMediaData(data: MediaData): Promise<void> {
   try {
     await writeFile(DATA_FILE, JSON.stringify(data, null, 2), 'utf-8');
   } catch (error) {

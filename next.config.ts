@@ -32,14 +32,6 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   },
 
-  // API configuration for file uploads
-  api: {
-    bodyParser: {
-      sizeLimit: '500mb',
-    },
-    responseLimit: '500mb',
-  },
-
   // Headers for file uploads
   async headers() {
     return [
