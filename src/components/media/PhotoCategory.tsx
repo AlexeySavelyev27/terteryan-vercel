@@ -50,7 +50,7 @@ export default function PhotoCategory({ onBack }: PhotoCategoryProps) {
     thumbnail: photo.thumbnailUrl || photo.mediumUrl || photo.src, // Thumbnail for quick loading
     title: locale === 'en' ? (photo.titleEn || photo.title) : photo.title,
     description: locale === 'en' ? (photo.descriptionEn || photo.description) : photo.description,
-    year: photo.year,
+    year: String(photo.year), // Convert to string to match MediaItem interface
   }))
 
   return (
