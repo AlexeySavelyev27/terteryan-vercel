@@ -36,159 +36,13 @@
     padding: 0 !important;
   }
 
-  /* FLOATING SETTINGS DRAWER */
-  .mobile-settings-backdrop {
-    position: fixed !important;
-    inset: 0 !important;
-    background: hsl(var(--foreground) / 0.4) !important;
-    z-index: 250 !important;
-    
-    opacity: 1 !important;
-    visibility: visible !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  }
-
-  /* Settings Drawer - slides up from bottom */
-  .mobile-settings-drawer {
-    position: fixed !important;
-    bottom: var(--mobile-nav-height) !important;
-    left: var(--mobile-content-padding) !important;
-    right: var(--mobile-content-padding) !important;
-    z-index: 300 !important;
-    
-    background: hsl(var(--background) / 0.95) !important;
-    border: 1px solid hsl(var(--border) / 0.2) !important;
-    border-radius: var(--mobile-border-radius) var(--mobile-border-radius) 0 0 !important;
-    
-    animation: slideUpIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  }
-
-  @keyframes slideUpIn {
-    from {
-      transform: translateY(100%) !important;
-      opacity: 0 !important;
-    }
-    to {
-      transform: translateY(0) !important;
-      opacity: 1 !important;
-    }
-  }
-
-  /* Settings Content Row */
-  .mobile-settings-row {
-    padding: 16px 20px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 20px !important;
-  }
-
-  /* Setting Buttons - Desktop Style */
-  .mobile-setting-button {
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-    padding: 10px 16px !important;
-    background: hsl(var(--background) / 0.95) !important;
-    border: 1px solid hsl(var(--border) / 0.3) !important;
-    border-radius: 12px !important;
-    transition: var(--mobile-transition) !important;
-    cursor: pointer !important;
-    font-size: 13px !important;
-    font-weight: 500 !important;
-    color: var(--foreground) !important;
-    box-shadow: 0 2px 8px hsl(var(--foreground) / 0.1) !important;
-  }
-
-  .mobile-setting-button:hover {
-    background: hsl(var(--accent) / 0.3) !important;
-    transform: translateY(-1px) !important;
-    box-shadow: 0 4px 12px hsl(var(--foreground) / 0.15) !important;
-  }
-
-  .mobile-setting-button:active {
-    transform: scale(0.96) !important;
-  }
-
-  /* Theme Button */
-  .theme-button {
-    border: none !important;
-    background: transparent !important;
-  }
-
-  /* Language Button Wrapper */
-  .language-button {
-    position: relative !important;
-  }
-
-  .language-button .relative.group {
-    position: static !important;
-  }
-
-  .language-button .relative.group button {
-    border: none !important;
-    background: transparent !important;
-    padding: 0 !important;
-    min-width: auto !important;
-    font-size: 13px !important;
-    gap: 6px !important;
-  }
-
-  .language-button .absolute {
-    right: 0 !important;
-    left: auto !important;
-    bottom: 100% !important;
-    top: auto !important;
-    margin-bottom: 8px !important;
-    min-width: 140px !important;
-  }
-
-  /* Divider */
-  .mobile-setting-divider {
-    width: 1px !important;
-    height: 24px !important;
-    background: hsl(var(--border) / 0.3) !important;
-  }
-
-  /* SWIPE UP INDICATOR 
-  .mobile-swipe-indicator {
-    position: absolute !important;
-    top: -24px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: 36px !important;
-    height: 20px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    z-index: 100 !important;
-    cursor: pointer !important;
-    transition: var(--mobile-transition) !important;
-  }
-
-  .swipe-arrow {
-    width: 12px !important;
-    height: 12px !important;
-    border-top: 2px solid hsl(var(--muted-foreground) / 0.6) !important;
-    border-right: 2px solid hsl(var(--muted-foreground) / 0.6) !important;
-    transform: rotate(-45deg) !important;
-    transition: var(--mobile-transition) !important;
-  }
-
-  .mobile-swipe-indicator.open .swipe-arrow {
-    transform: rotate(135deg) !important;
-  }
-
-  .mobile-swipe-indicator:hover .swipe-arrow {
-    border-color: hsl(var(--muted-foreground) / 0.8) !important;
-  }
-*/
-  /* ROUNDED NAVIGATION WITH CONTENT MARGINS - Form Style */
+  /* MENU CONTAINER */
   .mobile-rounded-nav {
     margin: 0 var(--mobile-content-padding) 0 !important;
     border-radius: 12px !important;
-    overflow: hidden !important;
+    overflow: visible !important;
     padding: 0 15px !important;
+    position: relative !important;
   }
 
   /* MAIN CONTENT AREA - Full Height */
@@ -222,8 +76,14 @@
   nav {
     grid-area: navigation !important;
     position: relative !important;
-	align-self: center;
+    align-self: center !important;
     z-index: 100 !important;
+    isolation: isolate !important;
+  }
+  
+  /* MENU CONTAINER */
+  nav > div {
+    position: relative !important;
   }
 
   /* Hide desktop navigation decorations */
@@ -782,11 +642,6 @@
     --mobile-border-radius: 14px;
   }
 
-  .theme-switcher {
-    font-size: 11px !important;
-    padding: 6px 12px !important;
-  }
-
   .primary-button,
   .secondary-button {
     padding: 12px 20px !important;
@@ -908,7 +763,6 @@
   .primary-button:active,
   .secondary-button:active,
   .nav-button:active,
-  .theme-switcher:active,
   .unified-button-bg:active {
     animation: tap-feedback 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
@@ -921,8 +775,7 @@
     display: block !important;
   }
   
-  nav,
-  .theme-switcher {
+  nav {
     display: none !important;
   }
   

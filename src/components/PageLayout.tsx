@@ -8,6 +8,7 @@ import { Sun, Moon, Globe } from "lucide-react"
 import TransitionLink from "./TransitionLink"
 import { useLocale } from "../contexts/LocaleContext"
 import LanguageSwitcher from "./LanguageSwitcher"
+import MobileLanguageSwitcher from "./MobileLanguageSwitcher"
 import ImagePreloader from "./ImagePreloader"
 
 // Page order for navigation
@@ -447,44 +448,8 @@ export default function PageLayout({ children }: PageLayoutProps) {
 
         {/* Mobile Content - uses CSS Grid from globals.css */}
         <div className="fixed z-10" style={{ inset: 0 }}>
-          {/* Settings Drawer - slides up from navigation */}
-          {isSettingsDrawerOpen && (
-            <>
-              <div 
-                className="mobile-settings-backdrop" 
-                onClick={() => setIsSettingsDrawerOpen(false)}
-              />
-              <div className="mobile-settings-drawer">
-                <div className="mobile-settings-row">
-                  <button
-                    onClick={toggleTheme}
-                    className="mobile-setting-button theme-button"
-                  >
-                    {(isDark ?? false) ? <Sun size={20} /> : <Moon size={20} />}
-                    <span>{(isDark ?? false) ? t.theme.light : t.theme.dark}</span>
-                  </button>
-                  
-                  <div className="mobile-setting-divider" />
-                  
-                  <div className="mobile-setting-button language-button">
-                    <Globe size={20} />
-                    <LanguageSwitcher />
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
-
-          {/* Navigation Menu with Swipe Indicator */}
+          {/* Navigation Menu with Settings Drawer */}
           <nav>
-            {/* Swipe Up Indicator */}
-            <div 
-              className={`mobile-swipe-indicator ${isSettingsDrawerOpen ? 'open' : ''}`}
-              onClick={() => setIsSettingsDrawerOpen(!isSettingsDrawerOpen)}
-            >
-              <div className="swipe-arrow" />
-            </div>
-            
             <div ref={menuRef}>
               <ul className="flex font-light menu-gradient-bg mobile-rounded-nav">
                 {PAGES.map((href) => (
@@ -500,7 +465,46 @@ export default function PageLayout({ children }: PageLayoutProps) {
                   </li>
                 ))}
               </ul>
+              
+              {/* Swipe Up Indicator - positioned over menu, independent element */}
+              <div 
+                className={`mobile-swipe-indicator ${isSettingsDrawerOpen ? 'open' : ''}`}
+                onClick={() => setIsSettingsDrawerOpen(!isSettingsDrawerOpen)}
+              >
+                <div className="swipe-arrow" />
+              </div>
             </div>
+            
+            {/* Settings Drawer - slides up from below menu */}
+            {isSettingsDrawerOpen && (
+              <>
+                <div 
+                  className="mobile-settings-backdrop" 
+                  onClick={() => setIsSettingsDrawerOpen(false)}
+                />
+                <div className="mobile-settings-drawer">
+                  <div className="mobile-settings-row">
+                    <div className="mobile-setting-button theme-button">
+                      <button
+                        onClick={toggleTheme}
+                        className="flex items-center gap-2 text-sm cursor-pointer transition-opacity duration-300"
+                        style={{ minWidth: '120px', justifyContent: 'flex-start' }}
+                      >
+                        {(isDark ?? false) ? <Sun size={16} /> : <Moon size={16} />}
+                        <span className="transition-opacity hover:opacity-80">{(isDark ?? false) ? t.theme.light : t.theme.dark}</span>
+                      </button>
+                    </div>
+                    
+                    <div className="mobile-setting-divider" />
+                    
+                    <div className="mobile-setting-button language-button">
+                      <Globe size={20} />
+                      <MobileLanguageSwitcher />
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
           </nav>
 
           {/* Content Area */}

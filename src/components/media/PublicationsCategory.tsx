@@ -59,8 +59,8 @@ export default function PublicationsCategory({ onBack }: PublicationsCategoryPro
       'Article': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
       'Исследование': 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
       'Research': 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
-      'Каталог': 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-      'Catalog': 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
+      'Ноты': 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
+      'Sheet music': 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
       'Сборник': 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
       'Collection': 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
     }

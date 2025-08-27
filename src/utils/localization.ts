@@ -101,7 +101,7 @@ export const translations: Record<'ru' | 'en', Translation> = {
       musicDescription: "Аудиозаписи произведений композитора",
       videoDescription: "Видеозаписи выступлений и интервью",
       photoDescription: "Фотографии из жизни и творчества",
-      publicationsDescription: "Статьи, интервью и материалы о композиторе",
+      publicationsDescription: "Статьи, интервью, ноты и другие материалы о композиторе",
       backToCategories: "← Вернуться к категориям",
       nowPlaying: "Сейчас играет",
       playingIndicator: "♪ Играет"
