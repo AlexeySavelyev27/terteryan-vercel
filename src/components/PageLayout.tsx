@@ -21,7 +21,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
   const { t, isLoading } = useLocale()
   // Use null initial state to prevent hydration mismatch
   const [isDark, setIsDark] = useState<boolean | null>(null)
-  // Removed photoLoaded state - no longer needed without opacity animation
+  const [isMobile, setIsMobile] = useState(false)
   const pathname = usePathname()
   const [isMounted, setIsMounted] = useState(false)
   const [showScrollbar, setShowScrollbar] = useState(false)
@@ -41,9 +41,16 @@ export default function PageLayout({ children }: PageLayoutProps) {
     "/contact": t.nav.contact,
   }
 
-  // Initialize theme and mounting - prevent hydration mismatch
+  // Initialize theme, mounting, and mobile detection
   useEffect(() => {
     setIsMounted(true)
+    
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
     
     // Check if there's a saved theme preference, default to light theme
     const savedTheme = localStorage.getItem('theme')
@@ -59,6 +66,10 @@ export default function PageLayout({ children }: PageLayoutProps) {
     
     // Start image preloading after the page is mounted
     setIsPreloadingImages(true)
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile)
+    }
   }, [])
 
   // Handle preload completion
@@ -67,18 +78,19 @@ export default function PageLayout({ children }: PageLayoutProps) {
     console.log('Image preloading completed - photos should load instantly now!')
   }
 
-  // No longer need menu width measurement - using CSS Grid layout
-
-  // Reset scroll position when pathname changes
+  // Reset scroll position when pathname changes (desktop only)
   useEffect(() => {
+    if (isMobile) return
     const contentZone = contentZoneRef.current
     if (contentZone) {
       contentZone.scrollTop = 0
     }
-  }, [pathname])
+  }, [pathname, isMobile])
 
-  // Global scroll redirection
+  // Global scroll redirection (desktop only)
   useEffect(() => {
+    if (isMobile) return
+    
     const contentZone = contentZoneRef.current
     if (!contentZone) return
 
@@ -216,12 +228,12 @@ export default function PageLayout({ children }: PageLayoutProps) {
       document.body.style.overflow = "auto"
       document.documentElement.style.overflow = "auto"
     }
-  }, [])
+  }, [isMobile])
 
-
-
-  // Custom scrollbar functionality - simple and immediate
+  // Custom scrollbar functionality (desktop only)
   useEffect(() => {
+    if (isMobile) return
+    
     const contentZone = contentZoneRef.current
     const scrollThumb = scrollThumbRef.current
 
@@ -258,9 +270,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
       window.removeEventListener("resize", updateScrollbar)
       resizeObserver.disconnect()
     }
-  }, [])
-
-  // Remove redundant width update - width is now calculated directly in style
+  }, [isMobile])
 
   const toggleTheme = () => {
     const newIsDark = !(isDark ?? false)
@@ -321,8 +331,6 @@ export default function PageLayout({ children }: PageLayoutProps) {
     }
   }, [pathname, isTransitioning, transitionClass])
 
-  // Removed photo fade-in effect - no longer needed
-
   // Show loading state with layout-matching background to prevent flash
   if (!isMounted || isDark === null) {
     return (
@@ -337,25 +345,27 @@ export default function PageLayout({ children }: PageLayoutProps) {
           }}
         />
         
-        {/* Match the portrait photo during loading */}
-        <div
-          className="fixed bg-cover bg-center"
-          style={{
-            backgroundImage: `url('/photos/1.jpg')`,
-            filter: "none",
-            width: "50%",
-            height: "100%",
-            right: "-14%",
-            top: "38%",
-            transform: "translateY(-50%) scale(1.47)",
-            transformOrigin: "center",
-            mask: "linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 38%)",
-            WebkitMask: "linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 38%)",
-            opacity: 1,
-            zIndex: 1,
-            overflow: "hidden",
-          }}
-        />
+        {/* Match the portrait photo during loading - only on desktop */}
+        {!isMobile && (
+          <div
+            className="fixed bg-cover bg-center"
+            style={{
+              backgroundImage: `url('/photos/1.jpg')`,
+              filter: "none",
+              width: "50%",
+              height: "100%",
+              right: "-14%",
+              top: "38%",
+              transform: "translateY(-50%) scale(1.47)",
+              transformOrigin: "center",
+              mask: "linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 38%)",
+              WebkitMask: "linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 38%)",
+              opacity: 1,
+              zIndex: 1,
+              overflow: "hidden",
+            }}
+          />
+        )}
         
         {/* Centered loading spinner */}
         <div className="relative z-10 h-full flex items-center justify-center">
@@ -365,6 +375,80 @@ export default function PageLayout({ children }: PageLayoutProps) {
     )
   }
 
+  // Mobile layout
+  if (isMobile) {
+    return (
+      <div className="h-screen overflow-hidden transition-colors duration-300">
+        {/* Fixed Background Image */}
+        <div
+          className="fixed inset-0 bg-cover bg-center bg-no-repeat transition-all duration-800"
+          style={{
+            backgroundImage: `url('/bg.png')`,
+            filter: isDark ? "invert(1)" : "none",
+            zIndex: 0,
+          }}
+        />
+
+        {/* Mobile Content - uses CSS Grid from globals.css */}
+        <div className="fixed z-10" style={{ inset: 0 }}>
+          {/* Theme and Language Switcher */}
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={toggleTheme}
+                className="theme-switcher flex items-center gap-2 px-3 py-2 rounded-full unified-button-bg transition-all duration-300 hover:shadow-lg text-xs group cursor-pointer"
+              >
+                {(isDark ?? false) ? <Sun size={16} /> : <Moon size={16} />}
+                <span className="group-hover:opacity-80 transition-opacity">{(isDark ?? false) ? t.theme.light : t.theme.dark}</span>
+              </button>
+              <LanguageSwitcher />
+            </div>
+          </div>
+
+          {/* Navigation Menu */}
+          <nav>
+            <div ref={menuRef}>
+              <ul className="flex font-light menu-gradient-bg">
+                {PAGES.map((href) => (
+                  <li key={href}>
+                    <TransitionLink
+                      href={href}
+                      className={`nav-button hover:underline underline-offset-4 decoration-2 transition-all duration-300 ${
+                        pathname === href ? "underline" : ""
+                      }`}
+                    >
+                      <span>{PAGE_NAMES[href as keyof typeof PAGE_NAMES]}</span>
+                    </TransitionLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </nav>
+
+          {/* Content Area */}
+          <main className={`${transitionClass}`}>
+            <div className="@container">
+              <div className="w-full h-full">
+                <div>
+                  {children}
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+
+        {/* Image Preloader */}
+        {isMounted && isPreloadingImages && (
+          <ImagePreloader
+            onComplete={handlePreloadComplete}
+            showProgress={false}
+          />
+        )}
+      </div>
+    )
+  }
+
+  // Desktop layout - original complex design
   return (
     <div className="h-screen overflow-hidden transition-colors duration-300">
       {/* Fixed Background Image - Optimized for performance */}
@@ -391,13 +475,13 @@ export default function PageLayout({ children }: PageLayoutProps) {
           transformOrigin: "center",
           mask: "linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 38%)",
           WebkitMask: "linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 38%)",
-          opacity: 1, // Remove opacity animation to prevent flash
+          opacity: 1,
           zIndex: 1,
           overflow: "hidden",
         }}
       />
 
-      {/* Custom Scrollbar at Screen Edge - Only show when content is scrollable */}
+      {/* Custom Scrollbar at Screen Edge */}
       <div
         ref={customScrollbarRef}
         className={`fixed z-20 transition-opacity duration-300 ${
@@ -409,7 +493,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
           width: "8px",
           height: "100vh",
           backgroundColor: "transparent",
-          pointerEvents: showScrollbar ? "none" : "none", // Keep as none for now, can be made interactive later
+          pointerEvents: showScrollbar ? "none" : "none",
         }}
       >
         <div
@@ -425,33 +509,32 @@ export default function PageLayout({ children }: PageLayoutProps) {
         />
       </div>
 
-      {/* Main Layout Grid - Optimized alignment */}
+      {/* Main Layout Grid */}
       <div
         className="fixed z-10"
         style={{
           top: "60px",
           left: "6vw",
-          right: "48%", // Stop well before the portrait area
+          right: "48%",
           bottom: "6vh",
           display: "grid",
-          gridTemplateColumns: "max-content 1fr", // Menu column auto-sizes, content takes remaining space
-          gridTemplateRows: "auto auto 1fr", // Theme row, menu row, content row
-          gap: "0", // Vertical gap between sections
+          gridTemplateColumns: "max-content 1fr",
+          gridTemplateRows: "auto auto 1fr",
+          gap: "0",
         }}
       >
-        {/* Theme Switcher & Language Switcher - Grid item */}
+        {/* Theme Switcher & Language Switcher */}
         <div
           className="flex items-center gap-4"
           style={{
             gridColumn: "1",
             gridRow: "1",
-			marginTop: "3vh",
+            marginTop: "3vh",
             marginLeft: "1.5vw",
-			marginBottom: "20px",
+            marginBottom: "20px",
             width: "calc(100% - 1.5vw)"
           }}
         >
-          {/* Theme Switcher first */}
           <button
             onClick={toggleTheme}
             className="theme-switcher flex items-center gap-2 px-4 py-2 rounded-full unified-button-bg transition-all duration-300 hover:shadow-lg text-sm group cursor-pointer"
@@ -459,12 +542,10 @@ export default function PageLayout({ children }: PageLayoutProps) {
             {(isDark ?? false) ? <Sun size={20} /> : <Moon size={20} />}
             <span className="group-hover:opacity-80 transition-opacity">{(isDark ?? false) ? t.theme.light : t.theme.dark}</span>
           </button>
-
-          {/* Language Switcher second */}
           <LanguageSwitcher />
         </div>
 
-        {/* Navigation Menu - Grid item */}
+        {/* Navigation Menu */}
         <nav style={{ gridColumn: "1", gridRow: "2" }}>
           <div
             ref={menuRef}
@@ -477,7 +558,6 @@ export default function PageLayout({ children }: PageLayoutProps) {
               boxSizing: "border-box",
             }}
           >
-            {/* Top gradient line */}
             <div
               className="menu-gradient-line relative"
               style={{
@@ -487,8 +567,6 @@ export default function PageLayout({ children }: PageLayoutProps) {
                 zIndex: 3,
               }}
             />
-
-            {/* Menu items */}
             <ul
               className="flex relative font-light menu-gradient-bg"
               style={{
@@ -506,7 +584,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
                 width: "fit-content",
                 minWidth: "0",
                 whiteSpace: "nowrap",
-                flexWrap: "nowrap", // Keep items in one line, scale font instead
+                flexWrap: "nowrap",
               }}
             >
               {PAGES.map((href) => (
@@ -537,8 +615,6 @@ export default function PageLayout({ children }: PageLayoutProps) {
                 </li>
               ))}
             </ul>
-
-            {/* Bottom gradient line */}
             <div
               className="menu-gradient-line relative"
               style={{
@@ -551,20 +627,18 @@ export default function PageLayout({ children }: PageLayoutProps) {
           </div>
         </nav>
 
-        {/* Content Area - Grid item, naturally aligned with menu */}
+        {/* Content Area */}
         <main
           className={`${transitionClass}`}
           style={{
-            gridColumn: "1", // Same column as menu for natural alignment
+            gridColumn: "1",
             gridRow: "3",
             overflow: "hidden",
             position: "relative",
-            // Ensure content is clipped during animations
             clipPath: isTransitioning ? "inset(0)" : "none",
-			transformStyle: "preserve-3d"
+            transformStyle: "preserve-3d"
           }}
         >
-          {/* Content container with overflow hidden to prevent scroll issues during transitions */}
           <div
             className={`@container relative`}
             style={{
@@ -573,24 +647,21 @@ export default function PageLayout({ children }: PageLayoutProps) {
               padding: "0",
               marginLeft: "1.5vw",
               boxSizing: "border-box",
-              overflow: "hidden", // Hide overflow during transitions
+              overflow: "hidden",
             }}
           >
-            {/* Scrollable content area with hidden scrollbar and gradient fade mask */}
             <div
               ref={contentZoneRef}
               className="w-full h-full overflow-y-auto overflow-x-hidden"
               style={{
                 paddingTop: "40px",
-				paddingBottom: "20px",
+                paddingBottom: "20px",
                 margin: "0",
                 wordWrap: "break-word",
                 overflowWrap: "break-word",
-                scrollbarWidth: "none", // Firefox
-                msOverflowStyle: "none", // IE/Edge
-                // Disable scroll during transitions
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
                 pointerEvents: isTransitioning ? 'none' : 'auto',
-                // Apply gradient mask to make content fade at top and bottom
                 mask: `linear-gradient(to bottom, 
                   transparent 0%, 
                   rgba(0,0,0,1) clamp(20px, 6vh, 40px), 
@@ -603,7 +674,6 @@ export default function PageLayout({ children }: PageLayoutProps) {
                   transparent 100%)`,
               }}
             >
-              {/* Content wrapper to ensure top-left alignment */}
               <div
                 style={{
                   width: "100%",
@@ -613,7 +683,6 @@ export default function PageLayout({ children }: PageLayoutProps) {
                   alignItems: "flex-start",
                   justifyContent: "flex-start",
                   textAlign: "left",
-                  // Prevent content interaction during transitions
                   pointerEvents: isTransitioning ? 'none' : 'auto',
                 }}
               >

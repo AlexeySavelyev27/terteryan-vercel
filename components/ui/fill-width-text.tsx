@@ -22,6 +22,19 @@ export const FillWidthText: React.FC<FillWidthTextProps> = ({
   const textRef = useRef<HTMLDivElement>(null)
   const [fontSize, setFontSize] = useState<number>(16)
   const [isCalculating, setIsCalculating] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth <= 768
+      setIsMobile(mobile)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const calculateOptimalFontSize = React.useCallback(() => {
     if (!textRef.current) return
@@ -30,11 +43,31 @@ export const FillWidthText: React.FC<FillWidthTextProps> = ({
     const parent = container.parentElement
     if (!parent) return
 
-    // Get parent width (available space)
-    const containerWidth = parent.clientWidth
+    // On mobile, use fixed sizes instead of dynamic calculation
+    if (isMobile) {
+      const text = typeof children === 'string' ? children : container.textContent || ''
+      
+      // Different sizes based on content type
+      if (text.includes('МИХАИЛ') || text.includes('ТЕРТЕРЯН')) {
+        // This is the composer name - use predefined mobile sizes
+        if (text === 'МИХАИЛ БАБКЕНОВИЧ') {
+          setFontSize(20) // First name smaller
+        } else {
+          setFontSize(28) // Last name larger
+        }
+      } else {
+        // Other text - use moderate size
+        setFontSize(24)
+      }
+      
+      setIsCalculating(false)
+      return
+    }
+
+    // Desktop calculation - original logic
+    const containerWidth = parent.clientWidth - 10
     if (containerWidth <= 0) return
     
-    // Debug log
     console.log('Container width:', containerWidth, 'Text:', typeof children === 'string' ? children : container.textContent)
 
     // Binary search for optimal font size
@@ -72,26 +105,25 @@ export const FillWidthText: React.FC<FillWidthTextProps> = ({
 
     document.body.removeChild(tempSpan)
 
-    // Debug log
     console.log('Calculated font size:', bestFontSize, 'for width:', containerWidth)
     
     setFontSize(bestFontSize)
     onFontSizeCalculated?.(bestFontSize)
     setIsCalculating(false)
-  }, [children, minFontSize, maxFontSize, onFontSizeCalculated])
+  }, [children, minFontSize, maxFontSize, onFontSizeCalculated, isMobile])
 
   useEffect(() => {
     setIsCalculating(true)
     // Small delay to ensure DOM is ready
     const timer = setTimeout(() => {
       calculateOptimalFontSize()
-    }, 50)
+    }, isMobile ? 50 : 100)
 
     return () => clearTimeout(timer)
   }, [calculateOptimalFontSize])
 
   useEffect(() => {
-    if (!textRef.current) return
+    if (!textRef.current || isMobile) return // Skip resize observer on mobile
 
     const resizeObserver = new ResizeObserver(() => {
       setIsCalculating(true)
@@ -106,7 +138,7 @@ export const FillWidthText: React.FC<FillWidthTextProps> = ({
     return () => {
       resizeObserver.disconnect()
     }
-  }, [calculateOptimalFontSize])
+  }, [calculateOptimalFontSize, isMobile])
 
   return (
     <div
@@ -117,9 +149,14 @@ export const FillWidthText: React.FC<FillWidthTextProps> = ({
         fontSize: `${fontSize}px`,
         opacity: isCalculating ? 0 : 1,
         transition: 'opacity 0.2s ease-in-out',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        width: '100%'
+        whiteSpace: isMobile ? 'normal' : 'nowrap', // Allow wrapping on mobile
+        overflow: 'visible',
+        width: '100%',
+        textAlign: isMobile ? 'center' : (style.textAlign || 'left'),
+        wordBreak: isMobile ? 'normal' : 'keep-all',
+        hyphens: 'none',
+        WebkitHyphens: 'none',
+        msHyphens: 'none'
       }}
     >
       {children}

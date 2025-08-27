@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 // Remove Google Fonts imports - using self-hosted fonts instead
 // import { Inter, Vollkorn, Merriweather, Playfair_Display, Crimson_Text, Lora, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
+import "./mobile-modern.css";
 import PageLayout from "../src/components/PageLayout";
 import { LocaleProvider } from "../src/contexts/LocaleContext";
 import { ErrorBoundary, OfflineBanner } from "../src/components/ErrorHandling";
