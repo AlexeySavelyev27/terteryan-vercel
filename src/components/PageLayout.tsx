@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
 import { usePathname } from "next/navigation"
-import { Sun, Moon } from "lucide-react"
+import { Sun, Moon, Globe } from "lucide-react"
 import TransitionLink from "./TransitionLink"
 import { useLocale } from "../contexts/LocaleContext"
 import LanguageSwitcher from "./LanguageSwitcher"
@@ -28,6 +28,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [transitionClass, setTransitionClass] = useState('')
   const [isPreloadingImages, setIsPreloadingImages] = useState(false)
+  const [isSettingsDrawerOpen, setIsSettingsDrawerOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const contentZoneRef = useRef<HTMLDivElement>(null)
   const customScrollbarRef = useRef<HTMLDivElement>(null)
@@ -71,6 +72,61 @@ export default function PageLayout({ children }: PageLayoutProps) {
       window.removeEventListener('resize', checkMobile)
     }
   }, [])
+
+  // Handle escape key and swipe gestures for settings drawer
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isSettingsDrawerOpen) {
+        setIsSettingsDrawerOpen(false)
+      }
+    }
+
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [isSettingsDrawerOpen])
+
+  // Swipe gesture handling for mobile settings drawer
+  useEffect(() => {
+    if (!isMobile) return
+
+    let startY = 0
+    let currentY = 0
+    let isDragging = false
+
+    const handleTouchStart = (e: TouchEvent) => {
+      const touch = e.touches[0]
+      startY = touch.clientY
+      currentY = touch.clientY
+      isDragging = true
+    }
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!isDragging) return
+      const touch = e.touches[0]
+      currentY = touch.clientY
+      const deltaY = startY - currentY
+
+      // Only respond to upward swipes in the bottom area of screen
+      if (deltaY > 30 && touch.clientY > window.innerHeight * 0.7) {
+        setIsSettingsDrawerOpen(true)
+        isDragging = false
+      }
+    }
+
+    const handleTouchEnd = () => {
+      isDragging = false
+    }
+
+    document.addEventListener('touchstart', handleTouchStart, { passive: true })
+    document.addEventListener('touchmove', handleTouchMove, { passive: true })
+    document.addEventListener('touchend', handleTouchEnd)
+
+    return () => {
+      document.removeEventListener('touchstart', handleTouchStart)
+      document.removeEventListener('touchmove', handleTouchMove)
+      document.removeEventListener('touchend', handleTouchEnd)
+    }
+  }, [isMobile, isSettingsDrawerOpen])
 
   // Handle preload completion
   const handlePreloadComplete = () => {
@@ -391,24 +447,46 @@ export default function PageLayout({ children }: PageLayoutProps) {
 
         {/* Mobile Content - uses CSS Grid from globals.css */}
         <div className="fixed z-10" style={{ inset: 0 }}>
-          {/* Theme and Language Switcher */}
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={toggleTheme}
-                className="theme-switcher flex items-center gap-2 px-3 py-2 rounded-full unified-button-bg transition-all duration-300 hover:shadow-lg text-xs group cursor-pointer"
-              >
-                {(isDark ?? false) ? <Sun size={16} /> : <Moon size={16} />}
-                <span className="group-hover:opacity-80 transition-opacity">{(isDark ?? false) ? t.theme.light : t.theme.dark}</span>
-              </button>
-              <LanguageSwitcher />
-            </div>
-          </div>
+          {/* Settings Drawer - slides up from navigation */}
+          {isSettingsDrawerOpen && (
+            <>
+              <div 
+                className="mobile-settings-backdrop" 
+                onClick={() => setIsSettingsDrawerOpen(false)}
+              />
+              <div className="mobile-settings-drawer">
+                <div className="mobile-settings-row">
+                  <button
+                    onClick={toggleTheme}
+                    className="mobile-setting-button theme-button"
+                  >
+                    {(isDark ?? false) ? <Sun size={20} /> : <Moon size={20} />}
+                    <span>{(isDark ?? false) ? t.theme.light : t.theme.dark}</span>
+                  </button>
+                  
+                  <div className="mobile-setting-divider" />
+                  
+                  <div className="mobile-setting-button language-button">
+                    <Globe size={20} />
+                    <LanguageSwitcher />
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
 
-          {/* Navigation Menu */}
+          {/* Navigation Menu with Swipe Indicator */}
           <nav>
+            {/* Swipe Up Indicator */}
+            <div 
+              className={`mobile-swipe-indicator ${isSettingsDrawerOpen ? 'open' : ''}`}
+              onClick={() => setIsSettingsDrawerOpen(!isSettingsDrawerOpen)}
+            >
+              <div className="swipe-arrow" />
+            </div>
+            
             <div ref={menuRef}>
-              <ul className="flex font-light menu-gradient-bg">
+              <ul className="flex font-light menu-gradient-bg mobile-rounded-nav">
                 {PAGES.map((href) => (
                   <li key={href}>
                     <TransitionLink

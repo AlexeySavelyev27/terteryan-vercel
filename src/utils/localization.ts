@@ -6,6 +6,8 @@ export interface Translation {
     biography: string;
     media: string;
     contact: string;
+    settings: string;
+    language: string;
   };
   
   // Main page
@@ -76,7 +78,9 @@ export const translations: Record<'ru' | 'en', Translation> = {
       main: "ГЛАВНАЯ",
       biography: "БИОГРАФИЯ", 
       media: "МЕДИА",
-      contact: "ОБРАТНАЯ СВЯЗЬ"
+      contact: "ОБРАТНАЯ СВЯЗЬ",
+      settings: "Настройки",
+      language: "Язык"
     },
     main: {
 	  title1: "МИХАИЛ БАБКЕНОВИЧ",
@@ -135,7 +139,9 @@ export const translations: Record<'ru' | 'en', Translation> = {
       main: "HOME",
       biography: "BIOGRAPHY",
       media: "MEDIA", 
-      contact: "CONTACT"
+      contact: "CONTACT",
+      settings: "Settings",
+      language: "Language"
     },
     main: {
 	  title1: "MIKHAIL BABKENOVICH",
